@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: ankit-vaghela-portfolio
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars: []
