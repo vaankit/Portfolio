@@ -62,8 +62,8 @@ const PROJECTS = [
     metric: "NZ public data, visualised",
   },
   {
-    id: "process-pioneer",
-    name: "Process Pioneer Pro",
+    id: "spot-pro",
+    name: "Spot Pro",
     tagline: "Done-for-you B2B automation consulting",
     description:
       "Productised service offering end-to-end workflow automation for B2B companies. Monthly retainer model covering audit, build, and optimisation of business processes using n8n, Make, Zapier, and custom API integrations.",
@@ -71,8 +71,8 @@ const PROJECTS = [
     status: "Active",
     color: "#FF6B6B",
     loom: null,
-    github: null,
-    live: null,
+    github: "https://github.com/vaankit/spot-pro",
+    live: "https://process-pioneer-pro.lovable.app/",
     featured: false,
     metric: "Monthly retainer model",
   },
