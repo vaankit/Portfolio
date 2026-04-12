@@ -85,7 +85,7 @@ const PROJECTS = [
     tech: ["Node.js", "Express", "Supabase", "Gemini", "Vanilla JS", "date-holidays"],
     status: "Live",
     color: "#E040FB",
-    loom: null,
+    loom: "https://www.loom.com/share/5f6d1f22fc7f435a85ff5ae8e4d48a6e",
     github: "https://github.com/vaankit/spot-ai-services-studio",
     live: null,
     featured: false,
@@ -387,7 +387,7 @@ function ProjectCard({ project, index }) {
                   border: `1px solid ${project.color}30`,
                 }}
               >
-                ▶ Demo
+                ▶ Loom Demo Video
               </a>
             )}
             {project.live && (
