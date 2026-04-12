@@ -68,7 +68,7 @@ const PROJECTS = [
     description:
       "Productised service offering end-to-end workflow automation for B2B companies. Monthly retainer model covering audit, build, and optimisation of business processes using n8n, Make, Zapier, and custom API integrations.",
     tech: ["n8n", "Make", "Zapier", "APIs", "Consulting"],
-    status: "Active",
+    status: "Beta",
     color: "#FF6B6B",
     loom: null,
     github: "https://github.com/vaankit/spot-pro",
