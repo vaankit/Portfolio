@@ -1,95 +1,59 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import portrait from "./assets/ankit-portrait.jpg";
 
-const PROJECTS = [
+const NAV_LINKS = [
+  { label: "About", href: "#about" },
+  { label: "Portfolio", href: "#portfolio" },
+  { label: "Services", href: "#services" },
+  { label: "Contact", href: "#contact" },
+];
+
+const HERO_METRICS = [
+  { value: "+06", label: "Products shipped" },
+  { value: "+07", label: "Years in tech" },
+];
+
+const SERVICES = [
   {
-    id: "ac-thematic",
-    name: "AC Thematic Analyser",
-    tagline: "Qualitative research analysis powered by local AI",
-    description:
-      "Full-stack Python/Flask app that accepts PDF uploads, extracts text, chunks with overlap, and runs thematic coding via local Ollama models. Returns structured analysis: themes ranked by frequency, sentiment overview, stakeholder breakdowns, and coded passages with confidence scores. 100% local — zero data leaves the machine.",
-    tech: ["Python", "Flask", "Ollama", "pdfplumber", "Local LLM"],
-    status: "Live",
-    color: "#00E5A0",
-    loom: "https://www.loom.com/share/bec58746e80a4bc698332449dcc0ad89",
-    github: null,
-    live: null,
-    featured: true,
-    metric: "94-sec demo video produced",
+    step: "01",
+    name: "AI workflow systems",
+    copy:
+      "I design and ship AI flows that include review layers, clean handoffs, and business logic that teams can actually trust in production.",
   },
   {
-    id: "apex-terminal",
-    name: "APEX Terminal",
-    tagline: "Bloomberg-replacement financial intelligence platform",
-    description:
-      "Multi-provider financial data terminal aggregating 6 API providers across 50+ exchanges. Real-time market data, portfolio analytics, and institutional-grade charting — built as an open-source alternative to $24k/year Bloomberg terminals.",
-    tech: ["React", "Python", "REST APIs", "WebSocket", "D3.js"],
-    status: "Live",
-    color: "#FFB800",
-    loom: null,
-    github: "https://github.com/vaankit",
-    live: null,
-    featured: true,
-    metric: "6 API providers · 50+ exchanges",
+    step: "02",
+    name: "Local-first intelligence",
+    copy:
+      "From Ollama-based research tooling to privacy-sensitive automation, I build systems where control, speed, and data boundaries still matter.",
   },
   {
-    id: "wellington-shield",
-    name: "Wellington Shield",
-    tagline: "AI-powered property insurance quoting platform",
-    description:
-      "Automated insurance quoting engine for NZ property. Ingests property data, risk profiles, and policy parameters to generate instant quotes with AI-driven risk assessment and pricing models.",
-    tech: ["Next.js", "AI/ML", "Node.js", "PostgreSQL"],
-    status: "Beta",
-    color: "#6C63FF",
-    loom: null,
-    github: "https://github.com/vaankit/shield-ai-quote",
-    live: "https://shield-ai-quote.onrender.com/",
-    featured: false,
-    metric: "Instant quote generation",
+    step: "03",
+    name: "Operational interfaces",
+    copy:
+      "Dashboards, internal tools, and public-facing products that turn messy inputs into calm, usable outputs for real operators.",
+  },
+];
+
+const EXPERIENCE = [
+  {
+    org: "ANZ Bank",
+    role: "Technology Mobility Consultant",
+    scope: "Delivered mobility work across a 7,500+ device environment with enterprise-grade rollout expectations.",
   },
   {
-    id: "mapped-nz",
-    name: "Mapped.NZ",
-    tagline: "NZ government statistics visualisation",
-    description:
-      "Interactive data visualisation platform rendering New Zealand government statistics into explorable maps and dashboards. Makes public data accessible and actionable for researchers, journalists, and policy analysts.",
-    tech: ["React", "D3.js", "Mapbox", "Government APIs"],
-    status: "Live",
-    color: "#00B4D8",
-    loom: null,
-    github: "https://github.com/vaankit/mapped-nz",
-    live: "https://mapped-nz.onrender.com/",
-    featured: false,
-    metric: "NZ public data, visualised",
+    org: "NZ Parliament",
+    role: "M365 Migration Analyst",
+    scope: "Supported high-visibility migration work for 120+ MPs, Ministers, and teams including the PMO ecosystem.",
   },
   {
-    id: "spot-pro",
-    name: "Spot Pro",
-    tagline: "Done-for-you B2B automation consulting",
-    description:
-      "Productised service offering end-to-end workflow automation for B2B companies. Monthly retainer model covering audit, build, and optimisation of business processes using n8n, Make, Zapier, and custom API integrations.",
-    tech: ["n8n", "Make", "Zapier", "APIs", "Consulting"],
-    status: "Beta",
-    color: "#FF6B6B",
-    loom: null,
-    github: "https://github.com/vaankit/spot-pro",
-    live: "https://process-pioneer-pro.lovable.app/",
-    featured: false,
-    metric: "Monthly retainer model",
+    org: "Ministry of Justice",
+    role: "Intune and Autopilot",
+    scope: "Worked on endpoint modernization patterns, device readiness, and deployment workflows at government scale.",
   },
   {
-    id: "spot-ai",
-    name: "Spot.AI",
-    tagline: "ABM Landing page + Full AI-powered Marketing Assistant",
-    description:
-      "Client-facing full-stack services studio for the Spot.AI ABM ecosystem. Includes realtime marketing material generation, marketing email generation, a public holiday and long-weekend planner, and a marketing assistant with streamed output, review stages, audit trails, per-user usage tracking, and NZ-aligned compliance screening.",
-    tech: ["Node.js", "Express", "Supabase", "Gemini", "Vanilla JS", "date-holidays"],
-    status: "Live",
-    color: "#E040FB",
-    loom: "https://www.loom.com/share/5f6d1f22fc7f435a85ff5ae8e4d48a6e",
-    github: "https://github.com/vaankit/spot-ai-services-studio",
-    live: null,
-    featured: false,
-    metric: "4 production services · NZ review pipeline",
+    org: "NZ Police",
+    role: "iPhone Refresh",
+    scope: "Contributed to fleet rollout and refresh operations where repeatability and execution quality mattered.",
   },
 ];
 
@@ -97,59 +61,144 @@ const CERTIFICATIONS = [
   { name: "MD-102", detail: "Endpoint Administrator" },
   { name: "AI-900", detail: "Azure AI Fundamentals" },
   { name: "CTech", detail: "Certified Technologist" },
-  { name: "Cyber Security Professional", detail: "InfoSec" },
+  { name: "Cyber Security", detail: "InfoSec Professional" },
 ];
 
-const TECH_STACK = [
-  "Python",
-  "React",
-  "n8n",
-  "Make",
-  "Zapier",
-  "Ollama",
-  "Docker",
-  "Flask",
-  "Node.js",
-  "REST APIs",
-  "Workspace ONE",
-  "JAMF Pro",
-  "Intune",
-  "Claude API",
-  "PostgreSQL",
-  "Git",
+const SOCIALS = [
+  {
+    label: "GitHub",
+    value: "github.com/vaankit",
+    href: "https://github.com/vaankit",
+  },
+  {
+    label: "LinkedIn",
+    value: "linkedin.com/in/ankitvaghela",
+    href: "https://linkedin.com/in/ankitvaghela",
+  },
+  {
+    label: "Email",
+    value: "vaankit21@gmail.com",
+    href: "mailto:vaankit21@gmail.com",
+  },
+];
+
+const PROJECTS = [
+  {
+    id: "ac-thematic",
+    name: "AC Thematic Analyser",
+    tagline: "Qualitative research analysis powered by local AI",
+    description:
+      "Full-stack Python and Flask app that accepts PDF uploads, extracts text, chunks with overlap, and runs thematic coding via local Ollama models. Returns structured analysis with themes, sentiment, stakeholder breakdowns, and coded passages with confidence scores.",
+    tech: ["Python", "Flask", "Ollama", "pdfplumber", "Local LLM"],
+    status: "Live",
+    loom: "https://www.loom.com/share/bec58746e80a4bc698332449dcc0ad89",
+    github: null,
+    live: null,
+    metric: "94-second Loom demo video",
+  },
+  {
+    id: "apex-terminal",
+    name: "APEX Terminal",
+    tagline: "Bloomberg-replacement financial intelligence platform",
+    description:
+      "Multi-provider financial data terminal aggregating six API providers across 50+ exchanges. Built as an open-source alternative to expensive institutional market intelligence tooling.",
+    tech: ["React", "Python", "REST APIs", "WebSocket", "D3.js"],
+    status: "Live",
+    loom: null,
+    github: "https://github.com/vaankit",
+    live: null,
+    metric: "6 API providers and 50+ exchanges",
+  },
+  {
+    id: "wellington-shield",
+    name: "Wellington Shield",
+    tagline: "AI-powered property insurance quoting platform",
+    description:
+      "Automated insurance quoting engine for NZ property that ingests risk data and policy parameters to generate faster, more consistent quoting outputs.",
+    tech: ["Next.js", "AI/ML", "Node.js", "PostgreSQL"],
+    status: "Beta",
+    loom: null,
+    github: "https://github.com/vaankit/shield-ai-quote",
+    live: "https://shield-ai-quote.onrender.com/",
+    metric: "Instant quote generation",
+  },
+  {
+    id: "mapped-nz",
+    name: "Mapped.NZ",
+    tagline: "NZ government statistics visualisation",
+    description:
+      "Interactive visualisation platform rendering New Zealand government statistics into clearer maps and dashboards for researchers, journalists, and policy analysts.",
+    tech: ["React", "D3.js", "Mapbox", "Government APIs"],
+    status: "Live",
+    loom: null,
+    github: "https://github.com/vaankit/mapped-nz",
+    live: "https://mapped-nz.onrender.com/",
+    metric: "Public data made explorable",
+  },
+  {
+    id: "spot-pro",
+    name: "Spot Pro",
+    tagline: "Done-for-you B2B automation consulting",
+    description:
+      "Productized service offering end-to-end workflow automation for B2B companies using n8n, Make, Zapier, APIs, and repeatable delivery patterns.",
+    tech: ["n8n", "Make", "Zapier", "APIs", "Consulting"],
+    status: "Beta",
+    loom: null,
+    github: "https://github.com/vaankit/spot-pro",
+    live: "https://process-pioneer-pro.lovable.app/",
+    metric: "Monthly retainer model",
+  },
+  {
+    id: "spot-ai",
+    name: "Spot.AI",
+    tagline: "ABM landing page and AI marketing assistant",
+    description:
+      "Client-facing full-stack services studio for the Spot.AI ecosystem with marketing generation, public holiday planning, streaming assistant output, review stages, audit trails, and NZ-aligned compliance screening.",
+    tech: ["Node.js", "Express", "Supabase", "Gemini", "Vanilla JS"],
+    status: "Live",
+    loom: "https://www.loom.com/share/5f6d1f22fc7f435a85ff5ae8e4d48a6e",
+    github: "https://github.com/vaankit/spot-ai-services-studio",
+    live: null,
+    metric: "4 production services",
+  },
 ];
 
 function useInView(ref, threshold = 0.15) {
   const [isVisible, setIsVisible] = useState(false);
+
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
+    const node = ref.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          obs.unobserve(el);
+          observer.unobserve(node);
         }
       },
       { threshold }
     );
-    obs.observe(el);
-    return () => obs.disconnect();
+
+    observer.observe(node);
+    return () => observer.disconnect();
   }, [ref, threshold]);
+
   return isVisible;
 }
 
-function FadeIn({ children, delay = 0, className = "" }) {
+function Reveal({ children, delay = 0 }) {
   const ref = useRef(null);
   const isVisible = useInView(ref);
+
   return (
     <div
       ref={ref}
-      className={className}
+      className="reveal"
       style={{
         opacity: isVisible ? 1 : 0,
-        transform: isVisible ? "translateY(0)" : "translateY(30px)",
-        transition: `all 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
+        transform: isVisible ? "translateY(0)" : "translateY(28px)",
+        transition: `opacity 0.8s ease ${delay}s, transform 0.8s ease ${delay}s`,
       }}
     >
       {children}
@@ -157,289 +206,92 @@ function FadeIn({ children, delay = 0, className = "" }) {
   );
 }
 
-function StatusBadge({ status, color }) {
-  const isLive = status === "Live" || status === "Active";
+function BrandMark() {
+  return <div className="brand-mark" aria-hidden="true" />;
+}
+
+function ProjectLinks({ project }) {
   return (
-    <span
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "6px",
-        padding: "4px 12px",
-        borderRadius: "100px",
-        fontSize: "11px",
-        fontFamily: "'JetBrains Mono', monospace",
-        fontWeight: 600,
-        letterSpacing: "0.05em",
-        textTransform: "uppercase",
-        background: `${color}15`,
-        color: color,
-        border: `1px solid ${color}30`,
-      }}
-    >
-      {isLive && (
-        <span
-          style={{
-            width: 6,
-            height: 6,
-            borderRadius: "50%",
-            background: color,
-            animation: "pulse-dot 2s ease-in-out infinite",
-          }}
-        />
+    <div className="project-links">
+      {project.github && (
+        <a
+          className="project-link"
+          href={project.github}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub
+        </a>
       )}
-      {status}
-    </span>
+      {project.live && (
+        <a
+          className="project-link"
+          href={project.live}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Live Site
+        </a>
+      )}
+      {project.loom && (
+        <a
+          className="project-link"
+          href={project.loom}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Loom Demo Video
+        </a>
+      )}
+    </div>
   );
 }
 
 function ProjectCard({ project, index }) {
-  const [hovered, setHovered] = useState(false);
-  const isFeatured = project.featured;
+  const isFeatured = index === 0;
 
   return (
-    <FadeIn delay={index * 0.08}>
-      <div
-        className="project-card"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        style={{
-          position: "relative",
-          padding: isFeatured ? "36px" : "28px",
-          borderRadius: "16px",
-          background: hovered
-            ? "rgba(255,255,255,0.04)"
-            : "rgba(255,255,255,0.02)",
-          border: `1px solid ${hovered ? project.color + "40" : "rgba(255,255,255,0.06)"}`,
-          transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-          cursor: "default",
-          gridColumn: isFeatured ? "span 2" : "span 1",
-          overflow: "hidden",
-          minHeight: isFeatured ? "280px" : "auto",
-        }}
-      >
-        {/* Glow effect */}
-        <div
-          style={{
-            position: "absolute",
-            top: "-1px",
-            left: "20%",
-            right: "20%",
-            height: "1px",
-            background: `linear-gradient(90deg, transparent, ${project.color}${hovered ? "80" : "00"}, transparent)`,
-            transition: "all 0.4s ease",
-          }}
-        />
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
-            marginBottom: "16px",
-            flexWrap: "wrap",
-            gap: "8px",
-          }}
-        >
-          <StatusBadge status={project.status} color={project.color} />
-          <span
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "11px",
-              color: "rgba(255,255,255,0.3)",
-            }}
-          >
-            {String(index + 1).padStart(2, "0")}
-          </span>
-        </div>
-
-        <h3
-          style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: isFeatured ? "28px" : "22px",
-            fontWeight: 700,
-            color: "#fff",
-            marginBottom: "6px",
-            lineHeight: 1.2,
-          }}
-        >
-          {project.name}
-        </h3>
-
-        <p
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "12px",
-            color: project.color,
-            marginBottom: "16px",
-            letterSpacing: "0.02em",
-          }}
-        >
-          {project.tagline}
-        </p>
-
-        <p
-          style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "14px",
-            lineHeight: 1.7,
-            color: "rgba(255,255,255,0.55)",
-            marginBottom: "20px",
-            maxWidth: isFeatured ? "640px" : "none",
-          }}
-        >
-          {project.description}
-        </p>
-
-        {project.metric && (
-          <div
-            className="project-metric"
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "11px",
-              color: "rgba(255,255,255,0.4)",
-              marginBottom: "16px",
-              padding: "8px 12px",
-              background: "rgba(255,255,255,0.03)",
-              borderRadius: "8px",
-              display: "inline-block",
-              border: "1px solid rgba(255,255,255,0.05)",
-            }}
-          >
-            ▸ {project.metric}
-          </div>
-        )}
-
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "6px",
-            marginBottom: project.github || project.loom ? "20px" : "0",
-          }}
-        >
-          {project.tech.map((t) => (
-            <span
-              key={t}
-              style={{
-                padding: "4px 10px",
-                borderRadius: "6px",
-                fontSize: "11px",
-                fontFamily: "'JetBrains Mono', monospace",
-                color: "rgba(255,255,255,0.45)",
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.06)",
-              }}
-            >
-              {t}
+    <Reveal delay={index * 0.08}>
+      <article className={`project-card${isFeatured ? " featured" : ""}`}>
+        <div>
+          <div className="project-top">
+            <span className="project-index">
+              {String(index + 1).padStart(2, "0")}
             </span>
-          ))}
+            <span className="project-status">{project.status}</span>
+          </div>
+          <h3 className="project-name">{project.name}</h3>
+          <p className="project-tagline">{project.tagline}</p>
+          <p className="project-description">{project.description}</p>
+          <div className="project-metric">{project.metric}</div>
         </div>
 
-        {(project.github || project.loom || project.live) && (
-          <div
-            className="project-links"
-            style={{
-              display: "flex",
-              gap: "12px",
-              marginTop: "8px",
-            }}
-          >
-            {project.github && (
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="project-link"
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "12px",
-                  color: project.color,
-                  textDecoration: "none",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  padding: "6px 14px",
-                  borderRadius: "8px",
-                  border: `1px solid ${project.color}30`,
-                  transition: "all 0.2s ease",
-                }}
-              >
-                ↗ GitHub
-              </a>
-            )}
-            {project.loom && (
-              <a
-                href={project.loom}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="project-link"
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "12px",
-                  color: project.color,
-                  textDecoration: "none",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  padding: "6px 14px",
-                  borderRadius: "8px",
-                  border: `1px solid ${project.color}30`,
-                }}
-              >
-                ▶ Loom Demo Video
-              </a>
-            )}
-            {project.live && (
-              <a
-                href={project.live}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="project-link"
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "12px",
-                  color: project.color,
-                  textDecoration: "none",
-                  padding: "6px 14px",
-                  borderRadius: "8px",
-                  border: `1px solid ${project.color}30`,
-                }}
-              >
-                ◉ Live
-              </a>
-            )}
+        <div>
+          <div className="project-tech">
+            {project.tech.map((item) => (
+              <span key={item}>{item}</span>
+            ))}
           </div>
-        )}
-      </div>
-    </FadeIn>
+          <ProjectLinks project={project} />
+        </div>
+      </article>
+    </Reveal>
   );
 }
 
 export default function Portfolio() {
-  const [scrollY, setScrollY] = useState(0);
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const t = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(t);
-  }, []);
-
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [formStatus, setFormStatus] = useState("idle"); // idle | sending | sent | error
+  const [formStatus, setFormStatus] = useState("idle");
+  const year = new Date().getFullYear();
 
   const handleSubmit = async (event) => {
-    event?.preventDefault();
+    event.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
+
     setFormStatus("sending");
+
     try {
-      const res = await fetch("https://api.web3forms.com/submit", {
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -452,7 +304,8 @@ export default function Portfolio() {
           to: "vaankit21@gmail.com",
         }),
       });
-      const data = await res.json();
+
+      const data = await response.json();
       if (data.success) {
         setFormStatus("sent");
         setFormData({ name: "", email: "", message: "" });
@@ -467,1446 +320,1451 @@ export default function Portfolio() {
     }
   };
 
-  const nzTime = time.toLocaleTimeString("en-NZ", {
-    timeZone: "Pacific/Auckland",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  });
-
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#08090E",
-        color: "#fff",
-        fontFamily: "'DM Sans', sans-serif",
-        overflowX: "hidden",
-        position: "relative",
-      }}
-    >
+    <div className="portfolio-page">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap');
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; scroll-padding-top: 96px; }
-        body { min-width: 320px; background: #08090E; }
-        
-        @keyframes pulse-dot {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.4; transform: scale(0.8); }
-        }
-        
-        @keyframes grain {
-          0%, 100% { transform: translate(0, 0); }
-          10% { transform: translate(-2%, -2%); }
-          30% { transform: translate(3%, -1%); }
-          50% { transform: translate(-1%, 3%); }
-          70% { transform: translate(2%, 1%); }
-          90% { transform: translate(-3%, 2%); }
-        }
-        
-        @keyframes float-in {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes cursor-blink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
+        @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+        :root {
+          --bg: #f2ede3;
+          --paper: #fbf7f0;
+          --ink: #111110;
+          --muted: #5f5a52;
+          --line: rgba(17, 17, 16, 0.14);
+          --line-strong: rgba(17, 17, 16, 0.22);
+          --soft-shadow: 0 24px 70px rgba(17, 17, 16, 0.08);
         }
 
-        @keyframes shimmer {
-          0% { background-position: -200% 0; }
-          100% { background-position: 200% 0; }
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
         }
-        
+
+        html {
+          scroll-behavior: smooth;
+          scroll-padding-top: 88px;
+        }
+
+        body {
+          min-width: 320px;
+          background: var(--bg);
+        }
+
+        body,
+        input,
+        textarea,
+        button {
+          font-family: "Manrope", sans-serif;
+        }
+
+        img {
+          display: block;
+          max-width: 100%;
+        }
+
+        a {
+          color: inherit;
+          text-decoration: none;
+        }
+
+        button,
+        input,
+        textarea {
+          font: inherit;
+        }
+
         ::selection {
-          background: rgba(0, 229, 160, 0.3);
-          color: #fff;
+          background: rgba(17, 17, 16, 0.16);
+          color: var(--ink);
         }
-        
-        a { color: inherit; }
-        a:hover { opacity: 0.8; }
-        input, textarea, button { font: inherit; }
 
-        #projects,
+        #about,
+        #portfolio,
+        #services,
         #contact {
-          scroll-margin-top: 96px;
+          scroll-margin-top: 88px;
         }
 
-        .hero-shell {
+        .portfolio-page {
+          position: relative;
+          overflow-x: hidden;
+          min-height: 100vh;
+          color: var(--ink);
+          background:
+            radial-gradient(circle at top center, rgba(255, 255, 255, 0.72), transparent 38%),
+            linear-gradient(180deg, #f8f3eb 0%, #f0eadf 100%);
+        }
+
+        .portfolio-page::before {
+          content: "";
+          position: fixed;
+          inset: 0;
+          pointer-events: none;
+          opacity: 0.18;
+          background-image:
+            linear-gradient(rgba(17, 17, 16, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(17, 17, 16, 0.03) 1px, transparent 1px);
+          background-size: 24px 24px;
+          mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.18), transparent 72%);
+        }
+
+        .page-shell {
+          position: relative;
+          z-index: 1;
+          width: min(100%, 1360px);
+          margin: 0 auto;
+          padding: 24px 28px 96px;
+        }
+
+        .site-header {
           display: grid;
-          grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
-          gap: clamp(40px, 6vw, 88px);
-          align-items: start;
-          width: 100%;
+          grid-template-columns: auto 1fr auto;
+          align-items: center;
+          gap: 20px;
+          margin-bottom: 28px;
+        }
+
+        .site-caption,
+        .site-year,
+        .screen-kicker,
+        .nav-chip,
+        .screen-nav a,
+        .screen-footer,
+        .section-kicker,
+        .project-status,
+        .project-index,
+        .project-tech span,
+        .project-link,
+        .service-step,
+        .timeline-role,
+        .social-pill,
+        .form-label,
+        .footer-meta {
+          font-family: "JetBrains Mono", monospace;
+        }
+
+        .brand-mark {
+          width: 34px;
+          height: 34px;
+          border-radius: 50%;
+          border: 1px solid var(--line-strong);
+          position: relative;
+          display: grid;
+          place-items: center;
+          background: rgba(255, 255, 255, 0.62);
+        }
+
+        .brand-mark::before,
+        .brand-mark::after {
+          content: "";
+          position: absolute;
+          transform: rotate(45deg);
+        }
+
+        .brand-mark::before {
+          width: 12px;
+          height: 12px;
+          border: 2px solid var(--ink);
+        }
+
+        .brand-mark::after {
+          width: 6px;
+          height: 6px;
+          background: var(--ink);
+        }
+
+        .site-caption,
+        .site-year {
+          font-size: 12px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: rgba(17, 17, 16, 0.7);
+        }
+
+        .site-caption {
+          justify-self: center;
+        }
+
+        .hero-section {
+          position: relative;
+          padding: 28px 0 108px;
+        }
+
+        .ghost-word {
+          position: absolute;
+          left: 50%;
+          top: 36%;
+          transform: translate(-50%, -50%);
+          font-size: clamp(112px, 23vw, 320px);
+          letter-spacing: 0.22em;
+          font-weight: 800;
+          text-transform: uppercase;
+          color: rgba(17, 17, 16, 0.05);
+          pointer-events: none;
+          user-select: none;
+          white-space: nowrap;
+        }
+
+        .laptop-scene {
+          position: relative;
+          z-index: 2;
+          width: min(100%, 1120px);
+          margin: 48px auto 0;
+        }
+
+        .laptop-wrap {
+          transform: perspective(1800px) rotateX(7deg) rotateY(-15deg) rotateZ(-3deg);
+          transform-style: preserve-3d;
+          filter: drop-shadow(0 38px 65px rgba(17, 17, 16, 0.15));
+        }
+
+        .laptop-screen {
+          position: relative;
+          overflow: hidden;
+          padding: 22px;
+          border: 3px solid #2a2927;
+          border-radius: 32px 32px 18px 18px;
+          background: linear-gradient(180deg, #fcf8f1 0%, #f5efe6 100%);
+          box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+        }
+
+        .laptop-screen::after {
+          content: "";
+          position: absolute;
+          inset: 10px;
+          border-radius: 22px 22px 10px 10px;
+          border: 1px solid rgba(17, 17, 16, 0.08);
+          pointer-events: none;
+        }
+
+        .screen-topbar {
+          position: relative;
+          z-index: 1;
+          display: grid;
+          grid-template-columns: auto 1fr auto;
+          align-items: center;
+          gap: 20px;
+          padding: 4px 6px 18px;
+        }
+
+        .screen-nav {
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+          flex-wrap: wrap;
+        }
+
+        .screen-nav a {
+          font-size: 10px;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: rgba(17, 17, 16, 0.68);
+        }
+
+        .nav-chip {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 14px;
+          border-radius: 999px;
+          border: 1px solid var(--line-strong);
+          background: rgba(255, 255, 255, 0.7);
+          font-size: 10px;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+        }
+
+        .screen-body {
+          position: relative;
+          display: grid;
+          grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+          gap: 20px;
+          min-height: 540px;
+          overflow: hidden;
+          border-radius: 24px;
+          background: linear-gradient(180deg, rgba(255, 255, 255, 0.35), transparent 18%);
+        }
+
+        .screen-side-note {
+          position: absolute;
+          left: 12px;
+          top: 112px;
+          writing-mode: vertical-rl;
+          transform: rotate(180deg);
+          font-family: "JetBrains Mono", monospace;
+          font-size: 10px;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: rgba(17, 17, 16, 0.28);
+          z-index: 2;
+        }
+
+        .screen-left {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          gap: 28px;
+          padding: 44px 36px 34px 58px;
+        }
+
+        .hero-metrics {
+          display: flex;
+          gap: 28px;
+          flex-wrap: wrap;
+        }
+
+        .hero-metric {
+          min-width: 104px;
+        }
+
+        .hero-metric-value {
+          font-size: 40px;
+          line-height: 1;
+          font-weight: 700;
+          letter-spacing: -0.04em;
+        }
+
+        .hero-metric-label {
+          margin-top: 8px;
+          font-size: 10px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: rgba(17, 17, 16, 0.48);
+          font-family: "JetBrains Mono", monospace;
         }
 
         .hero-copy {
-          max-width: 640px;
-          align-self: start;
+          max-width: 460px;
         }
 
-        .hero-summary {
-          font-size: 18px;
-          line-height: 1.7;
-          color: rgba(255,255,255,0.5);
-          max-width: 560px;
-          margin-bottom: 40px;
+        .screen-kicker {
+          margin-bottom: 10px;
+          font-size: 11px;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: rgba(17, 17, 16, 0.42);
+        }
+
+        .hero-title {
+          font-family: "Instrument Serif", serif;
+          font-style: italic;
+          font-size: clamp(74px, 9vw, 142px);
+          line-height: 0.9;
+          letter-spacing: -0.05em;
           font-weight: 400;
+        }
+
+        .hero-subtitle {
+          margin-top: 12px;
+          max-width: 320px;
+          font-size: 14px;
+          color: rgba(17, 17, 16, 0.7);
+        }
+
+        .hero-description {
+          margin-top: 26px;
+          max-width: 460px;
+          font-size: 18px;
+          line-height: 1.75;
+          color: rgba(17, 17, 16, 0.78);
         }
 
         .hero-actions {
           display: flex;
-          gap: 16px;
+          gap: 14px;
           flex-wrap: wrap;
+          margin-top: 20px;
         }
 
-        .hero-rail {
-          display: flex;
-          flex-direction: column;
-          gap: 18px;
-          width: 100%;
-        }
-
-        .hero-panel,
-        .feature-panel,
-        .contact-form-card {
-          position: relative;
-          overflow: hidden;
-          border-radius: 18px;
-          border: 1px solid rgba(255,255,255,0.07);
-          background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-          backdrop-filter: blur(16px);
-        }
-
-        .hero-panel {
-          padding: 28px;
-        }
-
-        .hero-panel::before,
-        .feature-panel::before,
-        .contact-form-card::before {
-          content: "";
-          position: absolute;
-          top: -1px;
-          left: 18%;
-          right: 18%;
-          height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(0,229,160,0.35), transparent);
-        }
-
-        .hero-panel-grid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 12px;
-          margin-top: 18px;
-        }
-
-        .hero-metric {
-          padding: 14px 16px;
-          border-radius: 12px;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .hero-focus-list {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-          margin-top: 18px;
-        }
-
-        .hero-focus-item {
-          display: flex;
-          align-items: flex-start;
-          gap: 10px;
-          color: rgba(255,255,255,0.62);
-          font-size: 14px;
-          line-height: 1.6;
-        }
-
-        .split-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 40px;
-        }
-
-        .contact-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 60px;
-          align-items: start;
-        }
-
-        .project-links {
-          flex-wrap: wrap;
-        }
-
+        .hero-link,
+        .social-pill,
         .project-link {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          min-height: 40px;
-          white-space: nowrap;
+          gap: 8px;
+          padding: 12px 16px;
+          border-radius: 999px;
+          border: 1px solid var(--line-strong);
+          background: rgba(255, 255, 255, 0.74);
+          font-size: 11px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
         }
 
-        @media (max-width: 1100px) {
-          .hero-section {
-            padding-top: 120px !important;
-            padding-bottom: 80px !important;
+        .hero-link:hover,
+        .nav-chip:hover,
+        .social-pill:hover,
+        .project-link:hover {
+          transform: translateY(-2px);
+          background: #ffffff;
+          border-color: rgba(17, 17, 16, 0.32);
+        }
+
+        .screen-photo-panel {
+          position: relative;
+          min-height: 100%;
+          overflow: hidden;
+          border-radius: 20px;
+          background: linear-gradient(180deg, rgba(17, 17, 16, 0.04), rgba(17, 17, 16, 0.1));
+        }
+
+        .screen-photo-panel::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), transparent 40%, rgba(17, 17, 16, 0.15));
+        }
+
+        .screen-photo-panel::after {
+          content: "";
+          position: absolute;
+          inset: auto 0 0 0;
+          z-index: 2;
+          height: 32%;
+          background: linear-gradient(180deg, transparent, rgba(243, 238, 229, 0.9));
+        }
+
+        .hero-portrait {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: 72% 28%;
+          filter: grayscale(100%) contrast(1.08) brightness(1.06);
+          transform: scale(1.03);
+        }
+
+        .screen-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 18px 4px 2px;
+          font-size: 10px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: rgba(17, 17, 16, 0.45);
+        }
+
+        .laptop-base {
+          position: relative;
+          width: 88%;
+          height: 34px;
+          margin: 0 auto;
+          transform: translateY(-1px);
+          border-radius: 0 0 20px 20px;
+          background: linear-gradient(180deg, #d8d2ca 0%, #b6b0a9 100%);
+          box-shadow: 0 18px 28px rgba(17, 17, 16, 0.12);
+        }
+
+        .laptop-base::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          clip-path: polygon(6% 0, 94% 0, 100% 100%, 0 100%);
+          border-radius: 0 0 22px 22px;
+          background: linear-gradient(180deg, #d1cbc3 0%, #a7a19a 100%);
+        }
+
+        .laptop-base::after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: 8px;
+          transform: translateX(-50%);
+          width: 28%;
+          height: 8px;
+          border-radius: 999px;
+          background: rgba(92, 86, 80, 0.28);
+        }
+
+        .section {
+          position: relative;
+          padding: 96px 0;
+        }
+
+        .section-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+          gap: 42px;
+          align-items: start;
+        }
+
+        .section-kicker {
+          margin-bottom: 18px;
+          font-size: 11px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: rgba(17, 17, 16, 0.42);
+        }
+
+        .section-title {
+          max-width: 520px;
+          font-size: clamp(38px, 5vw, 74px);
+          line-height: 0.96;
+          letter-spacing: -0.05em;
+          font-weight: 800;
+        }
+
+        .section-title.serif,
+        .contact-heading .serif {
+          font-family: "Instrument Serif", serif;
+          font-style: italic;
+          font-weight: 400;
+        }
+
+        .section-description {
+          margin-top: 18px;
+          max-width: 520px;
+          font-size: 18px;
+          line-height: 1.8;
+          color: rgba(17, 17, 16, 0.72);
+        }
+
+        .overview-card {
+          padding: 30px;
+          border-radius: 30px;
+          border: 1px solid rgba(17, 17, 16, 0.1);
+          background: rgba(255, 255, 255, 0.62);
+          box-shadow: var(--soft-shadow);
+        }
+
+        .eyebrow-list {
+          display: grid;
+          gap: 18px;
+        }
+
+        .service-card {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          gap: 18px;
+          padding: 22px 0;
+          border-top: 1px solid rgba(17, 17, 16, 0.12);
+        }
+
+        .service-card:first-child {
+          padding-top: 0;
+          border-top: none;
+        }
+
+        .service-step {
+          padding-top: 4px;
+          font-size: 11px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: rgba(17, 17, 16, 0.38);
+        }
+
+        .service-name {
+          font-size: 26px;
+          letter-spacing: -0.04em;
+          font-weight: 700;
+        }
+
+        .service-copy {
+          margin-top: 8px;
+          font-size: 15px;
+          line-height: 1.8;
+          color: rgba(17, 17, 16, 0.68);
+        }
+
+        .accent-line {
+          width: 100%;
+          height: 1px;
+          margin: 28px 0;
+          background: linear-gradient(90deg, rgba(17, 17, 16, 0.4), rgba(17, 17, 16, 0.04));
+        }
+
+        .cert-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 12px;
+          margin-top: 26px;
+        }
+
+        .cert-card {
+          padding: 16px 18px;
+          border-radius: 18px;
+          border: 1px solid rgba(17, 17, 16, 0.1);
+          background: rgba(255, 255, 255, 0.74);
+        }
+
+        .cert-name {
+          font-weight: 700;
+          letter-spacing: -0.03em;
+        }
+
+        .cert-detail {
+          margin-top: 6px;
+          font-size: 13px;
+          color: rgba(17, 17, 16, 0.58);
+        }
+
+        .social-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+          margin-top: 26px;
+        }
+
+        .projects-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 22px;
+          margin-top: 38px;
+        }
+
+        .project-card {
+          padding: 28px;
+          border-radius: 28px;
+          border: 1px solid rgba(17, 17, 16, 0.12);
+          background: rgba(255, 255, 255, 0.72);
+          box-shadow: 0 22px 42px rgba(17, 17, 16, 0.07);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .project-card.featured {
+          grid-column: span 2;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          gap: 28px;
+        }
+
+        .project-card:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 32px 48px rgba(17, 17, 16, 0.09);
+        }
+
+        .project-top {
+          display: flex;
+          justify-content: space-between;
+          gap: 16px;
+          align-items: flex-start;
+        }
+
+        .project-index {
+          font-size: 11px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: rgba(17, 17, 16, 0.36);
+        }
+
+        .project-status {
+          padding: 8px 12px;
+          border-radius: 999px;
+          border: 1px solid rgba(17, 17, 16, 0.12);
+          font-size: 10px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: rgba(17, 17, 16, 0.52);
+        }
+
+        .project-name {
+          margin-top: 24px;
+          max-width: 320px;
+          font-size: 34px;
+          line-height: 0.96;
+          letter-spacing: -0.05em;
+          font-weight: 800;
+        }
+
+        .project-card.featured .project-name {
+          max-width: 420px;
+          font-size: 50px;
+        }
+
+        .project-tagline {
+          margin-top: 10px;
+          font-size: 11px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: rgba(17, 17, 16, 0.44);
+        }
+
+        .project-description {
+          margin-top: 18px;
+          max-width: 560px;
+          font-size: 15px;
+          line-height: 1.85;
+          color: rgba(17, 17, 16, 0.68);
+        }
+
+        .project-metric {
+          margin-top: 18px;
+          font-size: 11px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: rgba(17, 17, 16, 0.48);
+          font-family: "JetBrains Mono", monospace;
+        }
+
+        .project-tech {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-top: 22px;
+        }
+
+        .project-tech span {
+          padding: 9px 12px;
+          border-radius: 999px;
+          border: 1px solid rgba(17, 17, 16, 0.1);
+          background: rgba(255, 255, 255, 0.78);
+          font-size: 11px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: rgba(17, 17, 16, 0.56);
+        }
+
+        .project-links {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+          margin-top: 24px;
+        }
+
+        .timeline {
+          display: grid;
+          gap: 14px;
+        }
+
+        .timeline-item {
+          display: grid;
+          grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+          gap: 18px;
+          padding: 22px 0;
+          border-top: 1px solid rgba(17, 17, 16, 0.12);
+        }
+
+        .timeline-item:first-child {
+          padding-top: 0;
+          border-top: none;
+        }
+
+        .timeline-org {
+          font-size: 22px;
+          letter-spacing: -0.04em;
+          font-weight: 700;
+        }
+
+        .timeline-role {
+          font-size: 10px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: rgba(17, 17, 16, 0.42);
+        }
+
+        .timeline-scope {
+          margin-top: 8px;
+          font-size: 15px;
+          line-height: 1.8;
+          color: rgba(17, 17, 16, 0.66);
+        }
+
+        .contact-panel {
+          display: grid;
+          grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+          gap: 28px;
+          padding: 34px;
+          border-radius: 32px;
+          background: #171614;
+          color: #f4efe6;
+          box-shadow: 0 30px 60px rgba(17, 17, 16, 0.15);
+        }
+
+        .contact-panel .section-kicker,
+        .contact-panel .contact-copy,
+        .contact-panel .contact-link-label,
+        .contact-panel .contact-link-value,
+        .contact-panel .form-feedback {
+          color: rgba(244, 239, 230, 0.72);
+        }
+
+        .contact-heading {
+          font-size: clamp(34px, 5vw, 70px);
+          line-height: 0.98;
+          letter-spacing: -0.05em;
+          font-weight: 800;
+        }
+
+        .contact-copy {
+          margin-top: 18px;
+          max-width: 340px;
+          font-size: 17px;
+          line-height: 1.8;
+        }
+
+        .contact-links {
+          display: grid;
+          gap: 12px;
+          margin-top: 28px;
+        }
+
+        .contact-link {
+          display: flex;
+          justify-content: space-between;
+          gap: 16px;
+          align-items: center;
+          padding: 14px 0;
+          border-top: 1px solid rgba(244, 239, 230, 0.12);
+        }
+
+        .contact-link:first-child {
+          padding-top: 0;
+          border-top: none;
+        }
+
+        .contact-link-label {
+          font-size: 10px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+        }
+
+        .contact-link-value {
+          font-size: 16px;
+          font-weight: 600;
+          letter-spacing: -0.02em;
+        }
+
+        .form-shell {
+          padding: 24px;
+          border-radius: 28px;
+          border: 1px solid rgba(244, 239, 230, 0.12);
+          background: rgba(255, 255, 255, 0.06);
+        }
+
+        .form-grid {
+          display: grid;
+          gap: 16px;
+        }
+
+        .form-label {
+          display: block;
+          margin-bottom: 8px;
+          font-size: 10px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: rgba(244, 239, 230, 0.5);
+        }
+
+        .form-input,
+        .form-textarea {
+          width: 100%;
+          padding: 16px 18px;
+          border-radius: 18px;
+          border: 1px solid rgba(244, 239, 230, 0.14);
+          background: rgba(255, 255, 255, 0.04);
+          color: #f4efe6;
+          transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+          outline: none;
+          border-color: rgba(244, 239, 230, 0.34);
+          transform: translateY(-1px);
+        }
+
+        .form-textarea {
+          min-height: 150px;
+          resize: vertical;
+        }
+
+        .form-button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 6px;
+          padding: 16px 20px;
+          border: none;
+          border-radius: 999px;
+          background: #f4efe6;
+          color: #171614;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 11px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          cursor: pointer;
+          transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        .form-button:hover:not(:disabled) {
+          transform: translateY(-2px);
+        }
+
+        .form-button:disabled {
+          opacity: 0.45;
+          cursor: not-allowed;
+        }
+
+        .form-feedback {
+          font-size: 13px;
+        }
+
+        .footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 20px;
+          padding: 36px 0 0;
+          color: rgba(17, 17, 16, 0.5);
+          font-size: 13px;
+        }
+
+        .footer-meta {
+          font-size: 11px;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+        }
+
+        .reveal {
+          will-change: opacity, transform;
+        }
+
+        @media (max-width: 1180px) {
+          .page-shell {
+            padding-inline: 22px;
           }
 
-          .hero-shell {
-            grid-template-columns: 1fr;
-            gap: 28px;
-            align-items: start;
+          .ghost-word {
+            top: 32%;
+            font-size: clamp(100px, 20vw, 240px);
           }
 
-          .hero-copy,
-          .hero-rail {
-            max-width: 720px;
+          .laptop-wrap {
+            transform: perspective(1600px) rotateX(6deg) rotateY(-10deg) rotateZ(-2deg);
           }
 
-          .hero-scroll-indicator {
-            display: none !important;
+          .screen-body {
+            min-height: 500px;
           }
         }
 
-        @media (max-width: 900px) {
-          .split-grid,
-          .contact-grid,
-          .footer-grid {
-            grid-template-columns: 1fr !important;
+        @media (max-width: 980px) {
+          .site-header {
+            grid-template-columns: auto 1fr;
           }
 
-          .contact-grid {
-            gap: 32px !important;
+          .site-caption {
+            order: 3;
+            grid-column: 1 / -1;
+            justify-self: start;
           }
 
-          .stats-row {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-          }
-        }
-
-        @media (max-width: 768px) {
-          .hero-title { font-size: 46px !important; }
-          .hero-summary { font-size: 16px !important; margin-bottom: 28px !important; }
-          .projects-grid { grid-template-columns: 1fr !important; }
-          .projects-grid > div > div { grid-column: span 1 !important; }
-          .stats-row { grid-template-columns: 1fr 1fr !important; }
-          .nav-inner { padding: 0 20px !important; }
-          .section-pad { padding-left: 20px !important; padding-right: 20px !important; }
-          .hero-section { padding: 112px 20px 64px !important; }
-          .cert-grid { grid-template-columns: 1fr !important; }
-          .tech-wrap { justify-content: center !important; }
-          .footer-grid { grid-template-columns: 1fr !important; text-align: center !important; }
-          .hero-actions { flex-direction: column !important; width: 100% !important; }
-          .hero-actions a { width: 100%; justify-content: center; text-align: center; }
-          .hero-panel,
-          .feature-panel,
-          .contact-form-card,
-          .project-card { padding: 24px !important; }
-          .hero-panel-grid { grid-template-columns: 1fr 1fr !important; }
-          .project-links { gap: 10px !important; }
-          .project-link { flex: 1 1 calc(50% - 10px); text-align: center; }
-          .nav-meta { gap: 12px !important; }
-        }
-
-        @media (max-width: 540px) {
-          .hero-title { font-size: 38px !important; line-height: 1.02 !important; }
-          .hero-panel-grid,
-          .stats-row {
-            grid-template-columns: 1fr !important;
+          .site-year {
+            justify-self: end;
           }
 
-          .project-link {
-            flex: 1 1 100%;
-          }
-
-          .nav-meta {
-            font-size: 11px !important;
-          }
-
-          .nav-meta .nav-region {
+          .ghost-word {
             display: none;
           }
 
-          .feature-panel,
-          .contact-form-card {
-            padding: 22px !important;
+          .laptop-wrap {
+            transform: none;
           }
 
-          input,
-          textarea,
-          button {
-            font-size: 16px !important;
+          .screen-topbar {
+            grid-template-columns: 1fr;
+            justify-items: start;
+          }
+
+          .screen-nav {
+            justify-content: flex-start;
+          }
+
+          .screen-body,
+          .section-grid,
+          .contact-panel,
+          .timeline-item,
+          .projects-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .screen-body {
+            min-height: unset;
+          }
+
+          .screen-side-note {
+            display: none;
+          }
+
+          .screen-left {
+            padding: 28px 26px 12px;
+          }
+
+          .screen-photo-panel {
+            min-height: 420px;
+          }
+
+          .screen-footer {
+            padding: 14px 8px 6px;
+          }
+
+          .project-card.featured {
+            grid-column: span 1;
+            grid-template-columns: 1fr;
+          }
+        }
+
+        @media (max-width: 720px) {
+          .page-shell {
+            padding: 20px 16px 80px;
+          }
+
+          .hero-section {
+            padding-bottom: 72px;
+          }
+
+          .screen-nav {
+            gap: 12px;
+          }
+
+          .screen-nav a,
+          .site-caption,
+          .site-year {
+            font-size: 9px;
+          }
+
+          .screen-left {
+            padding: 24px 18px 10px;
+          }
+
+          .hero-title {
+            font-size: clamp(64px, 19vw, 102px);
+          }
+
+          .hero-description,
+          .section-description,
+          .contact-copy {
+            font-size: 16px;
+          }
+
+          .hero-actions,
+          .project-links,
+          .social-row {
+            gap: 10px;
+          }
+
+          .hero-link,
+          .social-pill,
+          .project-link,
+          .form-button {
+            width: 100%;
+          }
+
+          .hero-metrics {
+            gap: 18px;
+          }
+
+          .section {
+            padding: 76px 0;
+          }
+
+          .overview-card,
+          .project-card,
+          .contact-panel,
+          .form-shell {
+            padding: 24px;
+          }
+
+          .cert-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        @media (max-width: 540px) {
+          .site-header {
+            gap: 12px;
+          }
+
+          .screen-topbar {
+            gap: 14px;
+          }
+
+          .screen-nav {
+            gap: 10px 12px;
+          }
+
+          .hero-metric-value {
+            font-size: 30px;
+          }
+
+          .screen-photo-panel {
+            min-height: 320px;
+          }
+
+          .hero-portrait {
+            object-position: 70% 26%;
+          }
+
+          .section-title,
+          .contact-heading {
+            font-size: clamp(32px, 13vw, 48px);
+          }
+
+          .project-name {
+            font-size: 28px;
+          }
+
+          .project-card.featured .project-name {
+            font-size: 34px;
+          }
+
+          .footer {
+            flex-direction: column;
+            align-items: flex-start;
           }
         }
       `}</style>
 
-      {/* Film grain overlay */}
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          pointerEvents: "none",
-          zIndex: 9999,
-          opacity: 0.025,
-          background: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          animation: "grain 0.5s steps(1) infinite",
-        }}
-      />
+      <div className="page-shell">
+        <header className="site-header">
+          <a href="#top" aria-label="Ankit Vaghela home">
+            <BrandMark />
+          </a>
+          <div className="site-caption">Personal portfolio website</div>
+          <div className="site-year">{year}</div>
+        </header>
 
-      {/* Navigation */}
-      <nav
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 100,
-          padding: "16px 0",
-          background:
-            scrollY > 50
-              ? "rgba(8, 9, 14, 0.85)"
-              : "transparent",
-          backdropFilter: scrollY > 50 ? "blur(20px)" : "none",
-          borderBottom:
-            scrollY > 50
-              ? "1px solid rgba(255,255,255,0.05)"
-              : "1px solid transparent",
-          transition: "all 0.3s ease",
-        }}
-      >
-        <div
-          className="nav-inner"
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            padding: "0 40px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <span
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "14px",
-                fontWeight: 600,
-                color: "#00E5A0",
-              }}
-            >
-              AV
-            </span>
-            <span
-              style={{
-                width: "4px",
-                height: "4px",
-                borderRadius: "50%",
-                background: "#00E5A0",
-                animation: "pulse-dot 2s ease-in-out infinite",
-              }}
-            />
-          </div>
+        <main>
+          <section className="hero-section" id="top">
+            <div className="ghost-word">Portfolio</div>
 
-          <div
-            className="nav-meta"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "24px",
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "12px",
-              color: "rgba(255,255,255,0.4)",
-            }}
-          >
-            <span className="nav-region">WLG / NZ</span>
-            <span style={{ color: "#00E5A0" }}>{nzTime}</span>
-          </div>
-        </div>
-      </nav>
+            <Reveal>
+              <div className="laptop-scene">
+                <div className="laptop-wrap">
+                  <div className="laptop-screen">
+                    <div className="screen-topbar">
+                      <BrandMark />
 
-      {/* Hero Section */}
-      <section
-        className="hero-section"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          maxWidth: "1200px",
-          margin: "0 auto",
-          padding: "120px 40px 96px",
-          position: "relative",
-        }}
-      >
-        {/* Ambient glow */}
-        <div
-          style={{
-            position: "absolute",
-            top: "20%",
-            right: "-10%",
-            width: "500px",
-            height: "500px",
-            borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(0,229,160,0.06) 0%, transparent 70%)",
-            filter: "blur(60px)",
-            pointerEvents: "none",
-          }}
-        />
+                      <nav className="screen-nav" aria-label="Primary navigation">
+                        {NAV_LINKS.map((item) => (
+                          <a key={item.href} href={item.href}>
+                            {item.label}
+                          </a>
+                        ))}
+                      </nav>
 
-        <div
-          className="hero-shell"
-          style={{
-            animation: "float-in 1s cubic-bezier(0.16, 1, 0.3, 1) forwards",
-          }}
-        >
-          <div className="hero-copy">
-            <div
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "13px",
-                color: "#00E5A0",
-                marginBottom: "24px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-              }}
-            >
-              AI Workflows & Automation
-            </div>
-
-            <h1
-              className="hero-title"
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontSize: "72px",
-                fontWeight: 700,
-                lineHeight: 1.05,
-                marginBottom: "24px",
-                maxWidth: "800px",
-              }}
-            >
-              Ankit
-              <br />
-              Vaghela
-              <span style={{ color: "#00E5A0" }}>.</span>
-            </h1>
-
-            <p className="hero-summary">
-              I build AI workflows that people can trust and never have to think
-              about. From local LLM pipelines to production automation, I ship
-              systems that feel simple for the user and measurable for the
-              business.
-            </p>
-
-            <div className="hero-actions">
-              <a
-                href="#projects"
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  padding: "14px 28px",
-                  borderRadius: "10px",
-                  background: "#00E5A0",
-                  color: "#08090E",
-                  textDecoration: "none",
-                  transition: "all 0.2s ease",
-                  letterSpacing: "0.02em",
-                  display: "inline-flex",
-                  alignItems: "center",
-                }}
-              >
-                View Projects ↓
-              </a>
-              <a
-                href="https://github.com/vaankit"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  padding: "14px 28px",
-                  borderRadius: "10px",
-                  background: "transparent",
-                  color: "rgba(255,255,255,0.6)",
-                  textDecoration: "none",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  transition: "all 0.2s ease",
-                  display: "inline-flex",
-                  alignItems: "center",
-                }}
-              >
-                GitHub ↗
-              </a>
-            </div>
-          </div>
-
-          <div className="hero-rail">
-            <div className="hero-panel">
-              <div
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "11px",
-                  color: "#00E5A0",
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                }}
-              >
-                Operational Snapshot
-              </div>
-
-              <div
-                style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontSize: "28px",
-                  fontWeight: 600,
-                  lineHeight: 1.2,
-                  marginTop: "14px",
-                  color: "#fff",
-                  maxWidth: "460px",
-                }}
-              >
-                Production-minded AI systems for teams that want practical
-                outcomes, not demos.
-              </div>
-
-              <div className="hero-panel-grid">
-                {[
-                  { value: "6", label: "Products shipped" },
-                  { value: "7+", label: "Years in tech" },
-                  { value: "NZ", label: "Built in Wellington" },
-                  { value: "Local", label: "LLM-first where needed" },
-                ].map((item) => (
-                  <div key={item.label} className="hero-metric">
-                    <div
-                      style={{
-                        fontFamily: "'Space Grotesk', sans-serif",
-                        fontSize: "24px",
-                        fontWeight: 700,
-                        color: "#fff",
-                        marginBottom: "4px",
-                      }}
-                    >
-                      {item.value}
-                    </div>
-                    <div
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: "10px",
-                        color: "rgba(255,255,255,0.42)",
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      {item.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="feature-panel" style={{ padding: "24px 28px" }}>
-              <div
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "11px",
-                  color: "rgba(255,255,255,0.42)",
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                }}
-              >
-                What I usually build
-              </div>
-
-              <div className="hero-focus-list">
-                {[
-                  "AI assistants with review layers, guardrails, and real business logic",
-                  "Automation systems that reduce repetitive work instead of adding more dashboards",
-                  "Data-heavy tools that turn messy inputs into clear, trusted outputs",
-                ].map((item) => (
-                  <div key={item} className="hero-focus-item">
-                    <span
-                      style={{
-                        color: "#00E5A0",
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: "12px",
-                        lineHeight: 1.6,
-                      }}
-                    >
-                      ▸
-                    </span>
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div
-                style={{
-                  marginTop: "18px",
-                  paddingTop: "18px",
-                  borderTop: "1px solid rgba(255,255,255,0.06)",
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "11px",
-                  color: "rgba(255,255,255,0.38)",
-                  letterSpacing: "0.04em",
-                }}
-              >
-                Stack: Python, React, Node.js, n8n, APIs, local LLMs
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div
-          className="hero-scroll-indicator"
-          style={{
-            position: "absolute",
-            bottom: "40px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "8px",
-            opacity: scrollY > 100 ? 0 : 0.3,
-            transition: "opacity 0.3s ease",
-          }}
-        >
-          <div
-            style={{
-              width: "1px",
-              height: "40px",
-              background:
-                "linear-gradient(to bottom, transparent, rgba(255,255,255,0.3))",
-            }}
-          />
-        </div>
-      </section>
-
-      {/* Stats Bar */}
-      <section
-        className="section-pad"
-        style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 40px" }}
-      >
-        <FadeIn>
-          <div
-            className="stats-row"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: "1px",
-              background: "rgba(255,255,255,0.05)",
-              borderRadius: "16px",
-              overflow: "hidden",
-              marginBottom: "120px",
-            }}
-          >
-            {[
-              { value: "6", label: "Products Shipped" },
-              { value: "7+", label: "Years in Tech" },
-              { value: "4", label: "Certifications" },
-              { value: "100%", label: "Local-First AI" },
-            ].map((s) => (
-              <div
-                key={s.label}
-                style={{
-                  background: "rgba(255,255,255,0.02)",
-                  padding: "32px 24px",
-                  textAlign: "center",
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    fontSize: "36px",
-                    fontWeight: 700,
-                    color: "#00E5A0",
-                    marginBottom: "8px",
-                  }}
-                >
-                  {s.value}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "11px",
-                    color: "rgba(255,255,255,0.35)",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.08em",
-                  }}
-                >
-                  {s.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </FadeIn>
-      </section>
-
-      {/* Projects Section */}
-      <section
-        id="projects"
-        className="section-pad"
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          padding: "0 40px 120px",
-        }}
-      >
-        <FadeIn>
-          <div style={{ marginBottom: "60px" }}>
-            <span
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "12px",
-                color: "#00E5A0",
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-                display: "block",
-                marginBottom: "16px",
-              }}
-            >
-              Portfolio
-            </span>
-            <h2
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontSize: "42px",
-                fontWeight: 700,
-                lineHeight: 1.1,
-              }}
-            >
-              What I've built
-              <span style={{ color: "#00E5A0" }}>.</span>
-            </h2>
-          </div>
-        </FadeIn>
-
-        <div
-          className="projects-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            gap: "16px",
-          }}
-        >
-          {PROJECTS.map((p, i) => (
-            <ProjectCard key={p.id} project={p} index={i} />
-          ))}
-        </div>
-      </section>
-
-      {/* Philosophy Section */}
-      <section
-        className="section-pad"
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          padding: "0 40px 120px",
-        }}
-      >
-        <FadeIn>
-          <div
-            className="feature-panel"
-            style={{
-              padding: "60px",
-              borderRadius: "20px",
-              background:
-                "linear-gradient(135deg, rgba(0,229,160,0.05) 0%, rgba(0,229,160,0.01) 100%)",
-              border: "1px solid rgba(0,229,160,0.1)",
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            <span
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "12px",
-                color: "#00E5A0",
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-                display: "block",
-                marginBottom: "24px",
-              }}
-            >
-              Philosophy
-            </span>
-            <blockquote
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontSize: "28px",
-                fontWeight: 500,
-                lineHeight: 1.4,
-                color: "rgba(255,255,255,0.85)",
-                maxWidth: "700px",
-              }}
-            >
-              "The user should never have to understand how it works.
-              <br />
-              They just need to trust the output."
-            </blockquote>
-            <p
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "12px",
-                color: "rgba(255,255,255,0.3)",
-                marginTop: "20px",
-              }}
-            >
-              — The bridge principle
-            </p>
-          </div>
-        </FadeIn>
-      </section>
-
-      {/* Tech Stack + Certs */}
-      <section
-        className="section-pad"
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          padding: "0 40px 120px",
-        }}
-      >
-        <div
-          className="split-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "40px",
-          }}
-        >
-          <FadeIn>
-            <div>
-              <span
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "12px",
-                  color: "#00E5A0",
-                  letterSpacing: "0.15em",
-                  textTransform: "uppercase",
-                  display: "block",
-                  marginBottom: "24px",
-                }}
-              >
-                Tech Stack
-              </span>
-              <div
-                className="tech-wrap"
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "8px",
-                }}
-              >
-                {TECH_STACK.map((t) => (
-                  <span
-                    key={t}
-                    style={{
-                      padding: "8px 16px",
-                      borderRadius: "8px",
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: "12px",
-                      color: "rgba(255,255,255,0.5)",
-                      background: "rgba(255,255,255,0.03)",
-                      border: "1px solid rgba(255,255,255,0.06)",
-                      transition: "all 0.2s ease",
-                    }}
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </FadeIn>
-
-          <FadeIn delay={0.15}>
-            <div>
-              <span
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "12px",
-                  color: "#00E5A0",
-                  letterSpacing: "0.15em",
-                  textTransform: "uppercase",
-                  display: "block",
-                  marginBottom: "24px",
-                }}
-              >
-                Certifications
-              </span>
-              <div
-                className="cert-grid"
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "12px",
-                }}
-              >
-                {CERTIFICATIONS.map((c) => (
-                  <div
-                    key={c.name}
-                    style={{
-                      padding: "16px 20px",
-                      borderRadius: "10px",
-                      background: "rgba(255,255,255,0.02)",
-                      border: "1px solid rgba(255,255,255,0.06)",
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontFamily: "'Space Grotesk', sans-serif",
-                        fontSize: "15px",
-                        fontWeight: 600,
-                        color: "#fff",
-                        marginBottom: "4px",
-                      }}
-                    >
-                      {c.name}
-                    </div>
-                    <div
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: "11px",
-                        color: "rgba(255,255,255,0.3)",
-                      }}
-                    >
-                      {c.detail}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* Background Section */}
-      <section
-        className="section-pad"
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          padding: "0 40px 120px",
-        }}
-      >
-        <FadeIn>
-          <span
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "12px",
-              color: "#00E5A0",
-              letterSpacing: "0.15em",
-              textTransform: "uppercase",
-              display: "block",
-              marginBottom: "24px",
-            }}
-          >
-            Background
-          </span>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-              gap: "12px",
-            }}
-          >
-            {[
-              {
-                org: "ANZ Bank",
-                role: "Technology Mobility Consultant",
-                scope: "7,500+ devices",
-              },
-              {
-                org: "NZ Parliament",
-                role: "M365 Migration Analyst",
-                scope: "120+ MPs & Ministers incl. PMO",
-              },
-              {
-                org: "Ministry of Justice",
-                role: "Intune / Autopilot",
-                scope: "Endpoint modernisation",
-              },
-              {
-                org: "NZ Police",
-                role: "iPhone Refresh",
-                scope: "Fleet deployment",
-              },
-            ].map((b) => (
-              <div
-                key={b.org}
-                style={{
-                  padding: "24px",
-                  borderRadius: "12px",
-                  background: "rgba(255,255,255,0.02)",
-                  border: "1px solid rgba(255,255,255,0.06)",
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    fontSize: "16px",
-                    fontWeight: 600,
-                    color: "#fff",
-                    marginBottom: "6px",
-                  }}
-                >
-                  {b.org}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: "13px",
-                    color: "rgba(255,255,255,0.5)",
-                    marginBottom: "4px",
-                  }}
-                >
-                  {b.role}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "11px",
-                    color: "rgba(255,255,255,0.25)",
-                  }}
-                >
-                  {b.scope}
-                </div>
-              </div>
-            ))}
-          </div>
-        </FadeIn>
-      </section>
-
-      {/* Contact Section */}
-      <section
-        id="contact"
-        className="section-pad"
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          padding: "0 40px 120px",
-        }}
-      >
-        <FadeIn>
-          <div
-            className="contact-grid"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "60px",
-              alignItems: "start",
-            }}
-          >
-            {/* Left — copy */}
-            <div>
-              <span
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "12px",
-                  color: "#00E5A0",
-                  letterSpacing: "0.15em",
-                  textTransform: "uppercase",
-                  display: "block",
-                  marginBottom: "16px",
-                }}
-              >
-                Get In Touch
-              </span>
-              <h2
-                style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontSize: "42px",
-                  fontWeight: 700,
-                  lineHeight: 1.1,
-                  marginBottom: "20px",
-                }}
-              >
-                Let's build
-                <br />
-                something
-                <span style={{ color: "#00E5A0" }}>.</span>
-              </h2>
-              <p
-                style={{
-                  fontSize: "15px",
-                  lineHeight: 1.7,
-                  color: "rgba(255,255,255,0.45)",
-                  maxWidth: "380px",
-                  marginBottom: "32px",
-                }}
-              >
-                Have an automation idea, a workflow to untangle, or a role that
-                needs an AI builder? Drop me a message — it lands straight in my
-                inbox.
-              </p>
-
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "12px",
-                }}
-              >
-                {[
-                  { icon: "↗", label: "GitHub", href: "https://github.com/vaankit" },
-                  { icon: "↗", label: "LinkedIn", href: "https://linkedin.com/in/ankitvaghela" },
-                  { icon: "◉", label: "Wellington, NZ", href: null },
-                ].map((link) => (
-                  <div key={link.label} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "12px", color: "#00E5A0" }}>
-                      {link.icon}
-                    </span>
-                    {link.href ? (
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          fontFamily: "'JetBrains Mono', monospace",
-                          fontSize: "13px",
-                          color: "rgba(255,255,255,0.5)",
-                          textDecoration: "none",
-                        }}
-                      >
-                        {link.label}
+                      <a className="nav-chip" href="#contact">
+                        Book A Call
                       </a>
-                    ) : (
-                      <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "13px", color: "rgba(255,255,255,0.5)" }}>
-                        {link.label}
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
+                    </div>
 
-            {/* Right — form */}
-            <div
-              className="contact-form-card"
-              style={{
-                padding: "36px",
-                borderRadius: "16px",
-                background: "rgba(255,255,255,0.02)",
-                border: "1px solid rgba(255,255,255,0.06)",
-                position: "relative",
-                overflow: "hidden",
-              }}
-            >
-              {formStatus === "sent" ? (
-                <div style={{ textAlign: "center", padding: "40px 0" }}>
-                  <div
-                    style={{
-                      width: "56px",
-                      height: "56px",
-                      borderRadius: "50%",
-                      background: "rgba(0,229,160,0.1)",
-                      border: "2px solid #00E5A0",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      margin: "0 auto 20px",
-                      fontSize: "24px",
-                    }}
-                  >
-                    ✓
+                    <div className="screen-body">
+                      <div className="screen-side-note">
+                        AI workflow architect - Wellington
+                      </div>
+
+                      <div className="screen-left">
+                        <div className="hero-metrics">
+                          {HERO_METRICS.map((item) => (
+                            <div key={item.label} className="hero-metric">
+                              <div className="hero-metric-value">{item.value}</div>
+                              <div className="hero-metric-label">{item.label}</div>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="hero-copy">
+                          <div className="screen-kicker">AI workflows and automation</div>
+                          <h1 className="hero-title">Hello</h1>
+                          <p className="hero-subtitle">
+                            It&apos;s Ankit, an AI workflow architect for modern teams.
+                          </p>
+                          <p className="hero-description">
+                            I build AI workflows, local-first tools, and production
+                            automation that feel simple to use and hard to break.
+                          </p>
+
+                          <div className="hero-actions">
+                            <a className="hero-link" href="#portfolio">
+                              View portfolio
+                            </a>
+                            <a
+                              className="hero-link"
+                              href="https://github.com/vaankit"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              GitHub
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="screen-photo-panel">
+                        <img
+                          className="hero-portrait"
+                          src={portrait}
+                          alt="Portrait of Ankit Vaghela"
+                          loading="eager"
+                          decoding="async"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="screen-footer">
+                      <span>Wellington, New Zealand</span>
+                      <a href="#portfolio">Scroll down</a>
+                    </div>
                   </div>
-                  <div
-                    style={{
-                      fontFamily: "'Space Grotesk', sans-serif",
-                      fontSize: "20px",
-                      fontWeight: 600,
-                      color: "#fff",
-                      marginBottom: "8px",
-                    }}
-                  >
-                    Message sent
+
+                  <div className="laptop-base" />
+                </div>
+              </div>
+            </Reveal>
+          </section>
+
+          <section className="section" id="about">
+            <div className="section-grid">
+              <Reveal>
+                <div>
+                  <div className="section-kicker">About</div>
+                  <h2 className="section-title">
+                    A builder who likes clean interfaces and complicated systems.
+                  </h2>
+                  <p className="section-description">
+                    I work at the intersection of enterprise delivery and product
+                    execution. That means I can move comfortably between endpoint
+                    programs, internal tooling, local AI workflows, and public-facing
+                    products without losing the user in the process.
+                  </p>
+
+                  <div className="accent-line" />
+
+                  <div className="cert-grid">
+                    {CERTIFICATIONS.map((item) => (
+                      <div key={item.name} className="cert-card">
+                        <div className="cert-name">{item.name}</div>
+                        <div className="cert-detail">{item.detail}</div>
+                      </div>
+                    ))}
                   </div>
-                  <div
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: "12px",
-                      color: "rgba(255,255,255,0.4)",
-                    }}
-                  >
-                    I'll get back to you shortly.
+
+                  <div className="social-row">
+                    {SOCIALS.map((item) => (
+                      <a
+                        key={item.label}
+                        className="social-pill"
+                        href={item.href}
+                        target={item.href.startsWith("mailto:") ? undefined : "_blank"}
+                        rel={item.href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+                      >
+                        {item.label}
+                      </a>
+                    ))}
                   </div>
                 </div>
-              ) : (
-                <form
-                  onSubmit={handleSubmit}
-                  style={{ display: "flex", flexDirection: "column", gap: "16px" }}
-                >
-                  <div>
-                    <label
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: "11px",
-                        color: "rgba(255,255,255,0.35)",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.08em",
-                        display: "block",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      autoComplete="name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="Your name"
-                      style={{
-                        width: "100%",
-                        padding: "12px 16px",
-                        borderRadius: "10px",
-                        border: "1px solid rgba(255,255,255,0.08)",
-                        background: "rgba(255,255,255,0.03)",
-                        color: "#fff",
-                        fontFamily: "'DM Sans', sans-serif",
-                        fontSize: "14px",
-                        outline: "none",
-                        transition: "border-color 0.2s ease",
-                      }}
-                      onFocus={(e) => (e.target.style.borderColor = "rgba(0,229,160,0.4)")}
-                      onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.08)")}
-                    />
+              </Reveal>
+
+              <Reveal delay={0.12}>
+                <div className="overview-card">
+                  <div className="section-kicker">Services</div>
+                  <div className="eyebrow-list">
+                    {SERVICES.map((item) => (
+                      <div key={item.step} className="service-card">
+                        <div className="service-step">{item.step}</div>
+                        <div>
+                          <div className="service-name">{item.name}</div>
+                          <p className="service-copy">{item.copy}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
+                </div>
+              </Reveal>
+            </div>
+          </section>
 
-                  <div>
-                    <label
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: "11px",
-                        color: "rgba(255,255,255,0.35)",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.08em",
-                        display: "block",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      autoComplete="email"
-                      autoCapitalize="none"
-                      autoCorrect="off"
-                      inputMode="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="your@email.com"
-                      style={{
-                        width: "100%",
-                        padding: "12px 16px",
-                        borderRadius: "10px",
-                        border: "1px solid rgba(255,255,255,0.08)",
-                        background: "rgba(255,255,255,0.03)",
-                        color: "#fff",
-                        fontFamily: "'DM Sans', sans-serif",
-                        fontSize: "14px",
-                        outline: "none",
-                        transition: "border-color 0.2s ease",
-                      }}
-                      onFocus={(e) => (e.target.style.borderColor = "rgba(0,229,160,0.4)")}
-                      onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.08)")}
-                    />
+          <section className="section" id="portfolio">
+            <Reveal>
+              <div>
+                <div className="section-kicker">Selected work</div>
+                <h2 className="section-title serif">Practical products, shipped with intent.</h2>
+                <p className="section-description">
+                  A mix of local AI research tooling, financial interfaces,
+                  automation products, marketing systems, and data visualization
+                  work built for actual use rather than portfolio theater.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="projects-grid">
+              {PROJECTS.map((project, index) => (
+                <ProjectCard key={project.id} project={project} index={index} />
+              ))}
+            </div>
+          </section>
+
+          <section className="section" id="services">
+            <div className="section-grid">
+              <Reveal>
+                <div>
+                  <div className="section-kicker">Background</div>
+                  <h2 className="section-title">
+                    Enterprise delivery discipline, product-minded execution.
+                  </h2>
+                  <p className="section-description">
+                    My background across banking, government, and large endpoint
+                    programs shaped how I build today: clear process, strong
+                    rollout thinking, and outputs that are ready for real teams
+                    rather than just design reviews.
+                  </p>
+                </div>
+              </Reveal>
+
+              <Reveal delay={0.12}>
+                <div className="overview-card">
+                  <div className="timeline">
+                    {EXPERIENCE.map((item) => (
+                      <div key={item.org} className="timeline-item">
+                        <div>
+                          <div className="timeline-org">{item.org}</div>
+                          <div className="timeline-role">{item.role}</div>
+                        </div>
+                        <p className="timeline-scope">{item.scope}</p>
+                      </div>
+                    ))}
                   </div>
+                </div>
+              </Reveal>
+            </div>
+          </section>
 
-                  <div>
-                    <label
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: "11px",
-                        color: "rgba(255,255,255,0.35)",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.08em",
-                        display: "block",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      Message
-                    </label>
-                    <textarea
-                      name="message"
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Tell me about your project or idea..."
-                      rows={5}
-                      style={{
-                        width: "100%",
-                        padding: "12px 16px",
-                        borderRadius: "10px",
-                        border: "1px solid rgba(255,255,255,0.08)",
-                        background: "rgba(255,255,255,0.03)",
-                        color: "#fff",
-                        fontFamily: "'DM Sans', sans-serif",
-                        fontSize: "14px",
-                        outline: "none",
-                        resize: "vertical",
-                        minHeight: "120px",
-                        transition: "border-color 0.2s ease",
-                      }}
-                      onFocus={(e) => (e.target.style.borderColor = "rgba(0,229,160,0.4)")}
-                      onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.08)")}
-                    />
-                  </div>
+          <section className="section" id="contact">
+            <Reveal>
+              <div className="contact-panel">
+                <div>
+                  <div className="section-kicker">Contact</div>
+                  <h2 className="contact-heading">
+                    Let&apos;s build something <span className="serif">worth shipping.</span>
+                  </h2>
+                  <p className="contact-copy">
+                    If you need help designing an AI workflow, untangling an
+                    internal process, or building a calmer product experience, send
+                    me a note.
+                  </p>
 
-                  <button
-                    type="submit"
-                    disabled={formStatus === "sending" || !formData.name || !formData.email || !formData.message}
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: "13px",
-                      fontWeight: 500,
-                      padding: "14px 28px",
-                      borderRadius: "10px",
-                      background:
-                        formStatus === "sending"
-                          ? "rgba(0,229,160,0.5)"
-                          : !formData.name || !formData.email || !formData.message
-                            ? "rgba(0,229,160,0.2)"
-                            : "#00E5A0",
-                      color: "#08090E",
-                      border: "none",
-                      cursor:
-                        formStatus === "sending" || !formData.name || !formData.email || !formData.message
-                          ? "not-allowed"
-                          : "pointer",
-                      transition: "all 0.2s ease",
-                      letterSpacing: "0.02em",
-                      marginTop: "4px",
-                    }}
-                  >
-                    {formStatus === "sending"
-                      ? "Sending..."
-                      : formStatus === "error"
-                        ? "Failed — try again"
-                        : "Send Message →"}
-                  </button>
+                  <div className="contact-links">
+                    {SOCIALS.map((item) => (
+                      <a
+                        key={item.label}
+                        className="contact-link"
+                        href={item.href}
+                        target={item.href.startsWith("mailto:") ? undefined : "_blank"}
+                        rel={item.href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+                      >
+                        <span className="contact-link-label">{item.label}</span>
+                        <span className="contact-link-value">{item.value}</span>
+                      </a>
+                    ))}
 
-                  {formStatus === "error" && (
-                    <div
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: "11px",
-                        color: "#FF6B6B",
-                        marginTop: "4px",
-                      }}
-                    >
-                      Something went wrong. Please try again or email me directly.
+                    <div className="contact-link">
+                      <span className="contact-link-label">Location</span>
+                      <span className="contact-link-value">Wellington, New Zealand</span>
                     </div>
-                  )}
-                </form>
-              )}
-            </div>
-          </div>
-        </FadeIn>
-      </section>
+                  </div>
+                </div>
 
-      {/* Footer */}
-      <footer
-        className="section-pad"
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          padding: "60px 40px",
-          borderTop: "1px solid rgba(255,255,255,0.05)",
-        }}
-      >
-        <div
-          className="footer-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr auto",
-            gap: "40px",
-            alignItems: "end",
-          }}
-        >
-          <div>
-            <div
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontSize: "20px",
-                fontWeight: 600,
-                marginBottom: "8px",
-              }}
-            >
-              Let's build something
-              <span style={{ color: "#00E5A0" }}>.</span>
-            </div>
-            <div
-              style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: "14px",
-                color: "rgba(255,255,255,0.4)",
-              }}
-            >
-              Wellington, New Zealand
-            </div>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              gap: "20px",
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "12px",
-            }}
-          >
-            <a
-              href="https://github.com/vaankit"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                color: "rgba(255,255,255,0.4)",
-                textDecoration: "none",
-              }}
-            >
-              GitHub
-            </a>
-            <a
-              href="https://linkedin.com/in/ankitvaghela"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                color: "rgba(255,255,255,0.4)",
-                textDecoration: "none",
-              }}
-            >
-              LinkedIn
-            </a>
-            <a
-              href="mailto:vaankit21@gmail.com"
-              style={{
-                color: "rgba(255,255,255,0.4)",
-                textDecoration: "none",
-              }}
-            >
-              Email
-            </a>
-          </div>
-        </div>
-        <div
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "11px",
-            color: "rgba(255,255,255,0.15)",
-            marginTop: "40px",
-          }}
-        >
-          © {new Date().getFullYear()} Ankit Vaghela. All rights reserved.
-        </div>
-      </footer>
+                <div className="form-shell">
+                  {formStatus === "sent" ? (
+                    <div className="form-feedback">
+                      Message sent. I&apos;ll get back to you shortly.
+                    </div>
+                  ) : (
+                    <form onSubmit={handleSubmit} className="form-grid">
+                      <div>
+                        <label className="form-label" htmlFor="name">
+                          Name
+                        </label>
+                        <input
+                          id="name"
+                          className="form-input"
+                          type="text"
+                          autoComplete="name"
+                          value={formData.name}
+                          onChange={(event) =>
+                            setFormData({ ...formData, name: event.target.value })
+                          }
+                          placeholder="Your name"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="form-label" htmlFor="email">
+                          Email
+                        </label>
+                        <input
+                          id="email"
+                          className="form-input"
+                          type="email"
+                          autoComplete="email"
+                          autoCapitalize="none"
+                          autoCorrect="off"
+                          inputMode="email"
+                          value={formData.email}
+                          onChange={(event) =>
+                            setFormData({ ...formData, email: event.target.value })
+                          }
+                          placeholder="your@email.com"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="form-label" htmlFor="message">
+                          Message
+                        </label>
+                        <textarea
+                          id="message"
+                          className="form-textarea"
+                          value={formData.message}
+                          onChange={(event) =>
+                            setFormData({ ...formData, message: event.target.value })
+                          }
+                          placeholder="Tell me about the workflow, product, or problem."
+                        />
+                      </div>
+
+                      <button
+                        className="form-button"
+                        type="submit"
+                        disabled={
+                          formStatus === "sending" ||
+                          !formData.name ||
+                          !formData.email ||
+                          !formData.message
+                        }
+                      >
+                        {formStatus === "sending"
+                          ? "Sending"
+                          : formStatus === "error"
+                            ? "Try again"
+                            : "Send message"}
+                      </button>
+
+                      {formStatus === "error" && (
+                        <div className="form-feedback">
+                          Something went wrong. Please try again or email me directly.
+                        </div>
+                      )}
+                    </form>
+                  )}
+                </div>
+              </div>
+            </Reveal>
+          </section>
+        </main>
+
+        <footer className="footer">
+          <div>Designed and built for a cleaner, more editorial presentation.</div>
+          <div className="footer-meta">Ankit Vaghela - Wellington, NZ</div>
+        </footer>
+      </div>
     </div>
   );
 }
