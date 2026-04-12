@@ -79,17 +79,17 @@ const PROJECTS = [
   {
     id: "spot-ai",
     name: "Spot.AI",
-    tagline: "Gym revenue recovery SaaS + ABM landing page tool",
+    tagline: "ABM Landing page + Full AI-powered Marketing Assistant",
     description:
-      "Dual-product SaaS: an AI-driven revenue recovery engine for gym & fitness businesses identifying at-risk memberships, paired with an account-based marketing landing page builder for targeted outreach campaigns.",
-    tech: ["React", "Node.js", "AI/ML", "Stripe", "ABM"],
-    status: "MVP",
+      "Client-facing full-stack services studio for the Spot.AI ABM ecosystem. Includes realtime marketing material generation, marketing email generation, a public holiday and long-weekend planner, and a marketing assistant with streamed output, review stages, audit trails, per-user usage tracking, and NZ-aligned compliance screening.",
+    tech: ["Node.js", "Express", "Supabase", "Gemini", "Vanilla JS", "date-holidays"],
+    status: "Live",
     color: "#E040FB",
     loom: null,
-    github: null,
+    github: "https://github.com/vaankit/spot-ai-services-studio",
     live: null,
     featured: false,
-    metric: "Revenue recovery + ABM",
+    metric: "4 production services · NZ review pipeline",
   },
 ];
 
