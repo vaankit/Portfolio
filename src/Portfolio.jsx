@@ -540,12 +540,13 @@ export default function Portfolio() {
           display: grid;
           grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
           gap: clamp(40px, 6vw, 88px);
-          align-items: end;
+          align-items: start;
           width: 100%;
         }
 
         .hero-copy {
           max-width: 640px;
+          align-self: start;
         }
 
         .hero-summary {
@@ -838,7 +839,7 @@ export default function Portfolio() {
           alignItems: "center",
           maxWidth: "1200px",
           margin: "0 auto",
-          padding: "136px 40px 84px",
+          padding: "120px 40px 96px",
           position: "relative",
         }}
       >
@@ -1425,7 +1426,7 @@ export default function Portfolio() {
               },
               {
                 org: "NZ Parliament",
-                role: "M365 Migration Lead",
+                role: "M365 Migration Analyst",
                 scope: "120+ MPs & Ministers incl. PMO",
               },
               {
