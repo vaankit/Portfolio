@@ -72,8 +72,8 @@ const SOCIALS = [
   },
   {
     label: "LinkedIn",
-    value: "linkedin.com/in/ankitvaghela",
-    href: "https://linkedin.com/in/ankitvaghela",
+    value: "linkedin.com/in/ankitkumar-vaghela",
+    href: "https://www.linkedin.com/in/ankitkumar-vaghela/",
   },
   {
     label: "Email",
