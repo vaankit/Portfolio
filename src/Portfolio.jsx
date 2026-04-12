@@ -200,6 +200,7 @@ function ProjectCard({ project, index }) {
   return (
     <FadeIn delay={index * 0.08}>
       <div
+        className="project-card"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         style={{
@@ -292,6 +293,7 @@ function ProjectCard({ project, index }) {
 
         {project.metric && (
           <div
+            className="project-metric"
             style={{
               fontFamily: "'JetBrains Mono', monospace",
               fontSize: "11px",
@@ -336,6 +338,7 @@ function ProjectCard({ project, index }) {
 
         {(project.github || project.loom || project.live) && (
           <div
+            className="project-links"
             style={{
               display: "flex",
               gap: "12px",
@@ -347,6 +350,7 @@ function ProjectCard({ project, index }) {
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="project-link"
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "12px",
@@ -369,6 +373,7 @@ function ProjectCard({ project, index }) {
                 href={project.loom}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="project-link"
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "12px",
@@ -390,6 +395,7 @@ function ProjectCard({ project, index }) {
                 href={project.live}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="project-link"
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "12px",
@@ -428,7 +434,8 @@ export default function Portfolio() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [formStatus, setFormStatus] = useState("idle"); // idle | sending | sent | error
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event?.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
     setFormStatus("sending");
     try {
@@ -483,6 +490,8 @@ export default function Portfolio() {
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap');
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+        body { min-width: 320px; background: #08090E; }
         
         @keyframes pulse-dot {
           0%, 100% { opacity: 1; transform: scale(1); }
@@ -520,18 +529,220 @@ export default function Portfolio() {
         
         a { color: inherit; }
         a:hover { opacity: 0.8; }
+        input, textarea, button { font: inherit; }
+
+        #projects,
+        #contact {
+          scroll-margin-top: 96px;
+        }
+
+        .hero-shell {
+          display: grid;
+          grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+          gap: clamp(40px, 6vw, 88px);
+          align-items: end;
+          width: 100%;
+        }
+
+        .hero-copy {
+          max-width: 640px;
+        }
+
+        .hero-summary {
+          font-size: 18px;
+          line-height: 1.7;
+          color: rgba(255,255,255,0.5);
+          max-width: 560px;
+          margin-bottom: 40px;
+          font-weight: 400;
+        }
+
+        .hero-actions {
+          display: flex;
+          gap: 16px;
+          flex-wrap: wrap;
+        }
+
+        .hero-rail {
+          display: flex;
+          flex-direction: column;
+          gap: 18px;
+          width: 100%;
+        }
+
+        .hero-panel,
+        .feature-panel,
+        .contact-form-card {
+          position: relative;
+          overflow: hidden;
+          border-radius: 18px;
+          border: 1px solid rgba(255,255,255,0.07);
+          background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+          backdrop-filter: blur(16px);
+        }
+
+        .hero-panel {
+          padding: 28px;
+        }
+
+        .hero-panel::before,
+        .feature-panel::before,
+        .contact-form-card::before {
+          content: "";
+          position: absolute;
+          top: -1px;
+          left: 18%;
+          right: 18%;
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(0,229,160,0.35), transparent);
+        }
+
+        .hero-panel-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 12px;
+          margin-top: 18px;
+        }
+
+        .hero-metric {
+          padding: 14px 16px;
+          border-radius: 12px;
+          background: rgba(255,255,255,0.03);
+          border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .hero-focus-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          margin-top: 18px;
+        }
+
+        .hero-focus-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+          color: rgba(255,255,255,0.62);
+          font-size: 14px;
+          line-height: 1.6;
+        }
+
+        .split-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 40px;
+        }
+
+        .contact-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 60px;
+          align-items: start;
+        }
+
+        .project-links {
+          flex-wrap: wrap;
+        }
+
+        .project-link {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 40px;
+          white-space: nowrap;
+        }
+
+        @media (max-width: 1100px) {
+          .hero-section {
+            padding-top: 120px !important;
+            padding-bottom: 80px !important;
+          }
+
+          .hero-shell {
+            grid-template-columns: 1fr;
+            gap: 28px;
+            align-items: start;
+          }
+
+          .hero-copy,
+          .hero-rail {
+            max-width: 720px;
+          }
+
+          .hero-scroll-indicator {
+            display: none !important;
+          }
+        }
+
+        @media (max-width: 900px) {
+          .split-grid,
+          .contact-grid,
+          .footer-grid {
+            grid-template-columns: 1fr !important;
+          }
+
+          .contact-grid {
+            gap: 32px !important;
+          }
+
+          .stats-row {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+        }
 
         @media (max-width: 768px) {
-          .hero-title { font-size: 42px !important; }
+          .hero-title { font-size: 46px !important; }
+          .hero-summary { font-size: 16px !important; margin-bottom: 28px !important; }
           .projects-grid { grid-template-columns: 1fr !important; }
           .projects-grid > div > div { grid-column: span 1 !important; }
           .stats-row { grid-template-columns: 1fr 1fr !important; }
           .nav-inner { padding: 0 20px !important; }
-          .section-pad { padding: 0 20px !important; }
-          .hero-section { padding: 0 20px !important; }
+          .section-pad { padding-left: 20px !important; padding-right: 20px !important; }
+          .hero-section { padding: 112px 20px 64px !important; }
           .cert-grid { grid-template-columns: 1fr !important; }
           .tech-wrap { justify-content: center !important; }
           .footer-grid { grid-template-columns: 1fr !important; text-align: center !important; }
+          .hero-actions { flex-direction: column !important; width: 100% !important; }
+          .hero-actions a { width: 100%; justify-content: center; text-align: center; }
+          .hero-panel,
+          .feature-panel,
+          .contact-form-card,
+          .project-card { padding: 24px !important; }
+          .hero-panel-grid { grid-template-columns: 1fr 1fr !important; }
+          .project-links { gap: 10px !important; }
+          .project-link { flex: 1 1 calc(50% - 10px); text-align: center; }
+          .nav-meta { gap: 12px !important; }
+        }
+
+        @media (max-width: 540px) {
+          .hero-title { font-size: 38px !important; line-height: 1.02 !important; }
+          .hero-panel-grid,
+          .stats-row {
+            grid-template-columns: 1fr !important;
+          }
+
+          .project-link {
+            flex: 1 1 100%;
+          }
+
+          .nav-meta {
+            font-size: 11px !important;
+          }
+
+          .nav-meta .nav-region {
+            display: none;
+          }
+
+          .feature-panel,
+          .contact-form-card {
+            padding: 22px !important;
+          }
+
+          input,
+          textarea,
+          button {
+            font-size: 16px !important;
+          }
         }
       `}</style>
 
@@ -603,6 +814,7 @@ export default function Portfolio() {
           </div>
 
           <div
+            className="nav-meta"
             style={{
               display: "flex",
               alignItems: "center",
@@ -612,7 +824,7 @@ export default function Portfolio() {
               color: "rgba(255,255,255,0.4)",
             }}
           >
-            <span>WLG / NZ</span>
+            <span className="nav-region">WLG / NZ</span>
             <span style={{ color: "#00E5A0" }}>{nzTime}</span>
           </div>
         </div>
@@ -622,13 +834,11 @@ export default function Portfolio() {
       <section
         className="hero-section"
         style={{
-          minHeight: "100vh",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
+          alignItems: "center",
           maxWidth: "1200px",
           margin: "0 auto",
-          padding: "0 40px",
+          padding: "136px 40px 84px",
           position: "relative",
         }}
       >
@@ -649,97 +859,212 @@ export default function Portfolio() {
         />
 
         <div
+          className="hero-shell"
           style={{
             animation: "float-in 1s cubic-bezier(0.16, 1, 0.3, 1) forwards",
           }}
         >
-          <div
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "13px",
-              color: "#00E5A0",
-              marginBottom: "24px",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-            }}
-          >
-            AI Workflows & Automation
+          <div className="hero-copy">
+            <div
+              style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: "13px",
+                color: "#00E5A0",
+                marginBottom: "24px",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}
+            >
+              AI Workflows & Automation
+            </div>
+
+            <h1
+              className="hero-title"
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: "72px",
+                fontWeight: 700,
+                lineHeight: 1.05,
+                marginBottom: "24px",
+                maxWidth: "800px",
+              }}
+            >
+              Ankit
+              <br />
+              Vaghela
+              <span style={{ color: "#00E5A0" }}>.</span>
+            </h1>
+
+            <p className="hero-summary">
+              I build AI workflows that people can trust and never have to think
+              about. From local LLM pipelines to production automation, I ship
+              systems that feel simple for the user and measurable for the
+              business.
+            </p>
+
+            <div className="hero-actions">
+              <a
+                href="#projects"
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  padding: "14px 28px",
+                  borderRadius: "10px",
+                  background: "#00E5A0",
+                  color: "#08090E",
+                  textDecoration: "none",
+                  transition: "all 0.2s ease",
+                  letterSpacing: "0.02em",
+                  display: "inline-flex",
+                  alignItems: "center",
+                }}
+              >
+                View Projects ↓
+              </a>
+              <a
+                href="https://github.com/vaankit"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  padding: "14px 28px",
+                  borderRadius: "10px",
+                  background: "transparent",
+                  color: "rgba(255,255,255,0.6)",
+                  textDecoration: "none",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  transition: "all 0.2s ease",
+                  display: "inline-flex",
+                  alignItems: "center",
+                }}
+              >
+                GitHub ↗
+              </a>
+            </div>
           </div>
 
-          <h1
-            className="hero-title"
-            style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: "72px",
-              fontWeight: 700,
-              lineHeight: 1.05,
-              marginBottom: "24px",
-              maxWidth: "800px",
-            }}
-          >
-            Ankit
-            <br />
-            Vaghela
-            <span style={{ color: "#00E5A0" }}>.</span>
-          </h1>
+          <div className="hero-rail">
+            <div className="hero-panel">
+              <div
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: "11px",
+                  color: "#00E5A0",
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                }}
+              >
+                Operational Snapshot
+              </div>
 
-          <p
-            style={{
-              fontSize: "18px",
-              lineHeight: 1.7,
-              color: "rgba(255,255,255,0.5)",
-              maxWidth: "560px",
-              marginBottom: "40px",
-              fontWeight: 400,
-            }}
-          >
-            I build AI workflows that people can trust and never have to think
-            about. From local LLM pipelines to production automation — six
-            products shipped, zero hype.
-          </p>
+              <div
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: "28px",
+                  fontWeight: 600,
+                  lineHeight: 1.2,
+                  marginTop: "14px",
+                  color: "#fff",
+                  maxWidth: "460px",
+                }}
+              >
+                Production-minded AI systems for teams that want practical
+                outcomes, not demos.
+              </div>
 
-          <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-            <a
-              href="#projects"
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "13px",
-                fontWeight: 500,
-                padding: "14px 28px",
-                borderRadius: "10px",
-                background: "#00E5A0",
-                color: "#08090E",
-                textDecoration: "none",
-                transition: "all 0.2s ease",
-                letterSpacing: "0.02em",
-              }}
-            >
-              View Projects ↓
-            </a>
-            <a
-              href="https://github.com/vaankit"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "13px",
-                fontWeight: 500,
-                padding: "14px 28px",
-                borderRadius: "10px",
-                background: "transparent",
-                color: "rgba(255,255,255,0.6)",
-                textDecoration: "none",
-                border: "1px solid rgba(255,255,255,0.1)",
-                transition: "all 0.2s ease",
-              }}
-            >
-              GitHub ↗
-            </a>
+              <div className="hero-panel-grid">
+                {[
+                  { value: "6", label: "Products shipped" },
+                  { value: "7+", label: "Years in tech" },
+                  { value: "NZ", label: "Built in Wellington" },
+                  { value: "Local", label: "LLM-first where needed" },
+                ].map((item) => (
+                  <div key={item.label} className="hero-metric">
+                    <div
+                      style={{
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontSize: "24px",
+                        fontWeight: 700,
+                        color: "#fff",
+                        marginBottom: "4px",
+                      }}
+                    >
+                      {item.value}
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: "10px",
+                        color: "rgba(255,255,255,0.42)",
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      {item.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="feature-panel" style={{ padding: "24px 28px" }}>
+              <div
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: "11px",
+                  color: "rgba(255,255,255,0.42)",
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                }}
+              >
+                What I usually build
+              </div>
+
+              <div className="hero-focus-list">
+                {[
+                  "AI assistants with review layers, guardrails, and real business logic",
+                  "Automation systems that reduce repetitive work instead of adding more dashboards",
+                  "Data-heavy tools that turn messy inputs into clear, trusted outputs",
+                ].map((item) => (
+                  <div key={item} className="hero-focus-item">
+                    <span
+                      style={{
+                        color: "#00E5A0",
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: "12px",
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      ▸
+                    </span>
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div
+                style={{
+                  marginTop: "18px",
+                  paddingTop: "18px",
+                  borderTop: "1px solid rgba(255,255,255,0.06)",
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: "11px",
+                  color: "rgba(255,255,255,0.38)",
+                  letterSpacing: "0.04em",
+                }}
+              >
+                Stack: Python, React, Node.js, n8n, APIs, local LLMs
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Scroll indicator */}
         <div
+          className="hero-scroll-indicator"
           style={{
             position: "absolute",
             bottom: "40px",
@@ -888,6 +1213,7 @@ export default function Portfolio() {
       >
         <FadeIn>
           <div
+            className="feature-panel"
             style={{
               padding: "60px",
               borderRadius: "20px",
@@ -898,17 +1224,6 @@ export default function Portfolio() {
               overflow: "hidden",
             }}
           >
-            <div
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                height: "1px",
-                background:
-                  "linear-gradient(90deg, transparent, rgba(0,229,160,0.3), transparent)",
-              }}
-            />
             <span
               style={{
                 fontFamily: "'JetBrains Mono', monospace",
@@ -960,6 +1275,7 @@ export default function Portfolio() {
         }}
       >
         <div
+          className="split-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
@@ -1180,13 +1496,13 @@ export default function Portfolio() {
       >
         <FadeIn>
           <div
+            className="contact-grid"
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
               gap: "60px",
               alignItems: "start",
             }}
-            className="footer-grid"
           >
             {/* Left — copy */}
             <div>
@@ -1273,6 +1589,7 @@ export default function Portfolio() {
 
             {/* Right — form */}
             <div
+              className="contact-form-card"
               style={{
                 padding: "36px",
                 borderRadius: "16px",
@@ -1282,18 +1599,6 @@ export default function Portfolio() {
                 overflow: "hidden",
               }}
             >
-              {/* Top glow */}
-              <div
-                style={{
-                  position: "absolute",
-                  top: "-1px",
-                  left: "20%",
-                  right: "20%",
-                  height: "1px",
-                  background: "linear-gradient(90deg, transparent, rgba(0,229,160,0.3), transparent)",
-                }}
-              />
-
               {formStatus === "sent" ? (
                 <div style={{ textAlign: "center", padding: "40px 0" }}>
                   <div
@@ -1334,7 +1639,10 @@ export default function Portfolio() {
                   </div>
                 </div>
               ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                <form
+                  onSubmit={handleSubmit}
+                  style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+                >
                   <div>
                     <label
                       style={{
@@ -1351,6 +1659,8 @@ export default function Portfolio() {
                     </label>
                     <input
                       type="text"
+                      name="name"
+                      autoComplete="name"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="Your name"
@@ -1387,6 +1697,11 @@ export default function Portfolio() {
                     </label>
                     <input
                       type="email"
+                      name="email"
+                      autoComplete="email"
+                      autoCapitalize="none"
+                      autoCorrect="off"
+                      inputMode="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="your@email.com"
@@ -1422,6 +1737,7 @@ export default function Portfolio() {
                       Message
                     </label>
                     <textarea
+                      name="message"
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="Tell me about your project or idea..."
@@ -1446,7 +1762,7 @@ export default function Portfolio() {
                   </div>
 
                   <button
-                    onClick={handleSubmit}
+                    type="submit"
                     disabled={formStatus === "sending" || !formData.name || !formData.email || !formData.message}
                     style={{
                       fontFamily: "'JetBrains Mono', monospace",
@@ -1490,7 +1806,7 @@ export default function Portfolio() {
                       Something went wrong. Please try again or email me directly.
                     </div>
                   )}
-                </div>
+                </form>
               )}
             </div>
           </div>
