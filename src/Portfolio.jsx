@@ -56,7 +56,7 @@ const PROJECTS = [
     status: "Live",
     color: "#00B4D8",
     loom: null,
-    github: "https://vaankit.github.io/mapped-nz/",
+    github: "https://github.com/vaankit/mapped-nz",
     live: "https://mapped-nz.onrender.com/",
     featured: false,
     metric: "NZ public data, visualised",
