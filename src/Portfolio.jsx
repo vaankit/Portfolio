@@ -489,6 +489,7 @@ export default function Portfolio() {
         .hero-section {
           position: relative;
           padding: 28px 0 108px;
+          overflow-x: hidden;
         }
 
         .ghost-word {
@@ -587,6 +588,17 @@ export default function Portfolio() {
           background: linear-gradient(180deg, rgba(255, 255, 255, 0.35), transparent 18%);
         }
 
+        .screen-left {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          gap: 28px;
+          padding: 44px 36px 34px 58px;
+          min-width: 0;
+        }
+
         .screen-side-note {
           position: absolute;
           left: 12px;
@@ -601,15 +613,7 @@ export default function Portfolio() {
           z-index: 2;
         }
 
-        .screen-left {
-          position: relative;
-          z-index: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          gap: 28px;
-          padding: 44px 36px 34px 58px;
-        }
+
 
         .hero-metrics {
           display: flex;
@@ -639,6 +643,7 @@ export default function Portfolio() {
 
         .hero-copy {
           max-width: 460px;
+          min-width: 0;
         }
 
         .screen-kicker {
@@ -652,10 +657,11 @@ export default function Portfolio() {
         .hero-title {
           font-family: "Instrument Serif", serif;
           font-style: italic;
-          font-size: clamp(74px, 9vw, 142px);
+          font-size: clamp(48px, 8vw, 142px);
           line-height: 0.9;
           letter-spacing: -0.05em;
           font-weight: 400;
+          word-break: break-word;
         }
 
         .hero-subtitle {
@@ -663,6 +669,7 @@ export default function Portfolio() {
           max-width: 320px;
           font-size: 14px;
           color: rgba(17, 17, 16, 0.7);
+          word-break: break-word;
         }
 
         .hero-description {
@@ -671,6 +678,7 @@ export default function Portfolio() {
           font-size: 18px;
           line-height: 1.75;
           color: rgba(17, 17, 16, 0.78);
+          word-break: break-word;
         }
 
         .hero-actions {
@@ -931,7 +939,7 @@ export default function Portfolio() {
         .project-card.featured {
           grid-column: span 2;
           display: grid;
-          grid-template-columns: minmax(0, 1fr) auto;
+          grid-template-columns: minmax(0, 1fr) minmax(0, auto);
           gap: 28px;
         }
 
@@ -992,6 +1000,8 @@ export default function Portfolio() {
           font-size: 15px;
           line-height: 1.85;
           color: rgba(17, 17, 16, 0.68);
+          word-break: break-word;
+          overflow-wrap: break-word;
         }
 
         .project-metric {
@@ -1075,6 +1085,7 @@ export default function Portfolio() {
           background: #171614;
           color: #f4efe6;
           box-shadow: 0 30px 60px rgba(17, 17, 16, 0.15);
+          overflow: hidden;
         }
 
         .contact-panel .section-kicker,
@@ -1112,6 +1123,7 @@ export default function Portfolio() {
           align-items: center;
           padding: 14px 0;
           border-top: 1px solid rgba(244, 239, 230, 0.12);
+          flex-wrap: wrap;
         }
 
         .contact-link:first-child {
@@ -1129,6 +1141,8 @@ export default function Portfolio() {
           font-size: 16px;
           font-weight: 600;
           letter-spacing: -0.02em;
+          word-break: break-all;
+          overflow-wrap: anywhere;
         }
 
         .form-shell {
@@ -1243,6 +1257,10 @@ export default function Portfolio() {
           .screen-body {
             min-height: 500px;
           }
+
+          .hero-title {
+            font-size: clamp(48px, 7vw, 120px);
+          }
         }
 
         @media (max-width: 980px) {
@@ -1280,7 +1298,10 @@ export default function Portfolio() {
           .screen-body,
           .section-grid,
           .contact-panel,
-          .timeline-item,
+          .timeline-item {
+            grid-template-columns: 1fr;
+          }
+
           .projects-grid {
             grid-template-columns: 1fr;
           }
@@ -1294,7 +1315,7 @@ export default function Portfolio() {
           }
 
           .screen-left {
-            padding: 28px 26px 12px;
+            padding: 28px 26px 24px;
           }
 
           .screen-photo-panel {
@@ -1308,6 +1329,14 @@ export default function Portfolio() {
           .project-card.featured {
             grid-column: span 1;
             grid-template-columns: 1fr;
+          }
+
+          .hero-title {
+            font-size: clamp(52px, 11vw, 100px);
+          }
+
+          .contact-link-value {
+            font-size: 14px;
           }
         }
 
@@ -1331,11 +1360,11 @@ export default function Portfolio() {
           }
 
           .screen-left {
-            padding: 24px 18px 10px;
+            padding: 24px 18px 20px;
           }
 
           .hero-title {
-            font-size: clamp(64px, 19vw, 102px);
+            font-size: clamp(42px, 14vw, 80px);
           }
 
           .hero-description,
@@ -1369,11 +1398,35 @@ export default function Portfolio() {
           .project-card,
           .contact-panel,
           .form-shell {
-            padding: 24px;
+            padding: 20px;
           }
 
           .cert-grid {
             grid-template-columns: 1fr;
+          }
+
+          .contact-panel {
+            padding: 24px 20px;
+            border-radius: 24px;
+          }
+
+          .contact-link {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+          }
+
+          .contact-link-value {
+            font-size: 13px;
+            word-break: break-all;
+          }
+
+          .timeline-item {
+            gap: 12px;
+          }
+
+          .service-name {
+            font-size: 20px;
           }
         }
 
@@ -1402,22 +1455,87 @@ export default function Portfolio() {
             object-position: 70% 26%;
           }
 
+          .hero-title {
+            font-size: clamp(38px, 12vw, 64px);
+          }
+
           .section-title,
           .contact-heading {
-            font-size: clamp(32px, 13vw, 48px);
+            font-size: clamp(28px, 11vw, 46px);
           }
 
           .project-name {
-            font-size: 28px;
+            font-size: 24px;
+            margin-top: 16px;
           }
 
           .project-card.featured .project-name {
-            font-size: 34px;
+            font-size: 28px;
           }
 
           .footer {
             flex-direction: column;
             align-items: flex-start;
+          }
+
+          .nav-chip {
+            font-size: 9px;
+            padding: 8px 10px;
+          }
+
+          .hero-description {
+            font-size: 15px;
+          }
+
+          .project-description {
+            font-size: 14px;
+          }
+
+          .laptop-screen {
+            padding: 14px;
+          }
+        }
+
+        @media (max-width: 400px) {
+          .page-shell {
+            padding: 16px 12px 72px;
+          }
+
+          .hero-title {
+            font-size: clamp(34px, 11vw, 52px);
+          }
+
+          .screen-left {
+            padding: 18px 14px 16px;
+          }
+
+          .hero-metric-value {
+            font-size: 26px;
+          }
+
+          .screen-photo-panel {
+            min-height: 260px;
+          }
+
+          .contact-panel {
+            padding: 18px 16px;
+          }
+
+          .form-shell {
+            padding: 16px;
+          }
+
+          .project-card {
+            padding: 18px;
+          }
+
+          .overview-card {
+            padding: 18px;
+          }
+
+          .section-title,
+          .contact-heading {
+            font-size: clamp(26px, 10vw, 40px);
           }
         }
       `}</style>
